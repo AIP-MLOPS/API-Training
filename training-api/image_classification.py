@@ -1,22 +1,27 @@
 
+import os
 import torch
 import torch.nn as nn
 import torchvision.models as models
 from torch.nn import functional as F
 from dotenv import load_dotenv
 
+from clearml import Task
+
 from ml_trainer import AutoTrainer
 from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
 
+
 load_dotenv()
+
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    clearml_url="http://web.mlops.ai-lab.ir/api_old",
-    clearml_access_key="9E280YOU7E94HR84OMDPW71JBP2XPZ",
-    clearml_secret_key="uRzPKO078_7TGFJRzImk0Zj1AwefwHgpiV11IWr8joS5M6AzKhwTTKI_HEHhxylXPoA",
-    clearml_username="mlops-admin"
+    clearml_url=os.environ["CLEARML_API_HOST"],
+    clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
+    clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
+    clearml_username=os.environ["CLEARML_USERNAME"]
 )
 
 # ---------- Variables -------------
@@ -91,7 +96,8 @@ cfg = {
     }
 }
 
-
+# Connect hyperparameters and other configurations to the ClearML task
+task.connect(cfg)
 
 trainer = AutoTrainer(config=cfg)
 
