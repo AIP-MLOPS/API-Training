@@ -15,7 +15,6 @@ from aipmodel.model_registry import MLOpsManager
 
 load_dotenv()
 
-
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
     clearml_url=os.environ["CLEARML_API_HOST"],
@@ -33,7 +32,7 @@ lr = 0.01
 save_model = False
 load_model = True
 model_name = "resnet50"
-model_id = "resnet50_t"
+model_id = "resnet50"
 model_save_name="resenet50_save1"
 transform = {
             "resize": [32, 32],
@@ -41,6 +40,13 @@ transform = {
             "normalize_std": [0.5, 0.5, 0.5]
         }
 
+# --------- ClearML task initialization --------
+task = Task.init(
+    project_name="API training",  # Name of the ClearML project
+    task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
+    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
+)
 # ---------
 # Ensure valid model name/id
 if model_name not in ["resnet50", "efficientnet_b0"] and model_id not in ["resnet50_t", "efficientnet_b0"]:
