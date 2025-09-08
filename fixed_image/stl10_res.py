@@ -10,18 +10,18 @@ from clearml import Task
 
 from ml_trainer import AutoTrainer
 from ml_trainer.base import AbstractModelArchitecture
-from aipmodel.model_registry import MLOpsManager
+# from aipmodel.model_registry import MLOpsManager
 
 
 load_dotenv()
 
 # --------- fetch model from model registry --------
-manager = MLOpsManager(
-    clearml_url=os.environ["CLEARML_API_HOST"],
-    clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
-    clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
-    clearml_username=os.environ["CLEARML_USERNAME"]
-)
+# manager = MLOpsManager(
+#     clearml_url=os.environ["CLEARML_API_HOST"],
+#     clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
+#     clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
+#     clearml_username=os.environ["CLEARML_USERNAME"]
+# )
 
 # ---------- Variables -------------
 dataset='stl10'
@@ -41,12 +41,12 @@ transform = {
         }
 
 # --------- ClearML task initialization --------
-task = Task.init(
-    project_name="API training",  # Name of the ClearML project
-    task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
-    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
-    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
-)
+# task = Task.init(
+#     project_name="API training",  # Name of the ClearML project
+#     task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
+#     task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+#     reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
+# )
 # ---------
 # Ensure valid model name/id
 if model_name not in ["resnet50", "efficientnet_b0"] and model_id not in ["resnet50_t", "efficientnet_b0"]:
@@ -62,13 +62,13 @@ else:
 
 # --------------     to load model -----------------
 
-if load_model: 
-    model_id = manager.get_model_id_by_name(model_id)
+# if load_model: 
+#     model_id = manager.get_model_id_by_name(model_id)
 
-    manager.get_model(
-        model_name= model_name,  # or any valid model ID
-        local_dest="."
-)
+#     manager.get_model(
+#         model_name= model_name,  # or any valid model ID
+#         local_dest="."
+# )
 
 #----------------- main config ----------------
 cfg = {
@@ -104,16 +104,16 @@ cfg = {
 }
 
 # Connect hyperparameters and other configurations to the ClearML task
-task.connect(cfg)
+# task.connect(cfg)
 
 trainer = AutoTrainer(config=cfg)
 
 trainer.run()
 
-if save_model:
-    local_model_id = manager.add_model(
-        source_type="local",
-        source_path="model/",
-        model_name=model_save_name,
-        code_path="." , # ← Replace with the path to your model.py if you have it
-    )
+# if save_model:
+#     local_model_id = manager.add_model(
+#         source_type="local",
+#         source_path="model/",
+#         model_name=model_save_name,
+#         code_path="." , # ← Replace with the path to your model.py if you have it
+#     )
