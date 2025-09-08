@@ -70,5 +70,4 @@ task.connect(cfg)
 
 print(cfg)
 
-
 print(os.environ["CLEARML_API_ACCESS_KEY"])
