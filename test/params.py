@@ -45,7 +45,7 @@ cfg = {
 
     # Dataset
     "dataset_config": {
-        "source": sources,
+        # "source": sources,
         "transform_config": transform
     },
     
