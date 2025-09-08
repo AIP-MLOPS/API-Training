@@ -1,11 +1,11 @@
 
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 from clearml import Task
 
 
-load_dotenv()
+# load_dotenv()
 
 # ---------- Variables -------------
 dataset='cifar-10'
