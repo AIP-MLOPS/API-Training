@@ -7,18 +7,18 @@ from dotenv import load_dotenv
 
 from ml_trainer import AutoTrainer
 from ml_trainer.base import AbstractModelArchitecture
-from aipmodel.model_registry import MLOpsManager
+# from aipmodel.model_registry import MLOpsManager
 import os
 
 load_dotenv()
 
 # --------- fetch model from model registry --------
-manager = MLOpsManager(
-    clearml_url=os.environ["CLEARML_API_HOST"],
-    clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
-    clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
-    clearml_username=os.environ["CLEARML_USERNAME"]
-)
+# manager = MLOpsManager(
+#     clearml_url=os.environ["CLEARML_API_HOST"],
+#     clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
+#     clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
+#     clearml_username=os.environ["CLEARML_USERNAME"]
+# )
 
 
 # ---------- Variables -------------
@@ -44,13 +44,13 @@ else:
     raise ValueError("Invalid dataset: choose either 'airline-passengers' or 'oil-spill'")
 
 # --------------     to load model -----------------
-if load_model: 
-    model_id = manager.get_model_id_by_name(model_name)
+# if load_model: 
+#     model_id = manager.get_model_id_by_name(model_name)
 
-    manager.get_model(
-        model_name= model_name,
-        local_dest="."
-    )
+#     manager.get_model(
+#         model_name= model_name,
+#         local_dest="."
+#     )
 
 
 #----------------- main config ----------------
@@ -68,12 +68,12 @@ cfg = {
     },
     "device": "cpu",  
 
-    # Model save
-    "save_model": save_model,
-    "model_dir": "model/",
+    # # Model save
+    # "save_model": save_model,
+    # "model_dir": "model/",
 
-    "load_model": load_model,  
-    "model_dir": f"./{model_id}/",
+    # "load_model": load_model,  
+    # "model_dir": f"./{model_id}/",
 
 
 
@@ -90,10 +90,10 @@ trainer = AutoTrainer(config=cfg)
 
 trainer.run()
 
-if save_model:
-    local_model_id = manager.add_model(
-        source_type="local",
-        source_path="model/",
-        model_name=model_save_name,
-        code_path="." , 
-    )
+# if save_model:
+#     local_model_id = manager.add_model(
+#         source_type="local",
+#         source_path="model/",
+#         model_name=model_save_name,
+#         code_path="." , 
+#     )
