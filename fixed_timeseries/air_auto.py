@@ -65,6 +65,7 @@ cfg = {
     "dataset_config": {
         "source": sources,
     },
+    "device": "cpu",  
 
     # Model save
     "save_model": save_model,

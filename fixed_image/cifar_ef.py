@@ -30,7 +30,7 @@ batch_size = 64
 split_ratio = 0.8
 lr = 0.01
 save_model = False
-load_model = True
+load_model = False
 model_name = "efficientnet_b0"
 model_id = "efficientnet_b0"
 model_save_name="efficientnet_b0_save1"
@@ -78,7 +78,9 @@ cfg = {
     "split_ratio": split_ratio,
     "lr": lr,
     "epochs": epochs,
-    "num_classes": 10,  
+    "num_classes": 10,
+    "device": "cpu",  
+  
 
     # Dataset
     "dataset_config": {
