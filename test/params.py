@@ -23,7 +23,10 @@ transform = {
             "normalize_mean": [0.5, 0.5, 0.5],
             "normalize_std": [0.5, 0.5, 0.5]
         }
-
+dataset_sources = {
+    "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
+    "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
+}
 # --------- ClearML task initialization --------
 task = Task.init(
     project_name="API training",  # Name of the ClearML project
@@ -45,7 +48,8 @@ cfg = {
 
     # Dataset
     "dataset_config": {
-        "name": 'cifar-10',
+        "name": dataset,             
+        "source": dataset_sources[dataset],  
         "transform_config": transform
     },
     
