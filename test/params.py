@@ -23,10 +23,10 @@ transform = {
             "normalize_mean": [0.5, 0.5, 0.5],
             "normalize_std": [0.5, 0.5, 0.5]
         }
-dataset_sources = {
-    "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
-    "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
-}
+# dataset_sources = {
+#     "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
+#     "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
+# }
 # --------- ClearML task initialization --------
 task = Task.init(
     project_name="API training",  # Name of the ClearML project
@@ -49,7 +49,7 @@ cfg = {
     # Dataset
     "dataset_config": {
         "name": dataset,             
-        "source": dataset_sources[dataset],  
+        "source": 'dataset_sources',  
         "transform_config": transform
     },
     
@@ -71,6 +71,17 @@ cfg = {
 
 # Connect hyperparameters and other configurations to the ClearML task
 task.connect(cfg)
+
+dataset_sources = {
+    "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
+    "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz",
+    'asghar data': 'asghar source'
+
+}
+print(cfg)
+
+# now update the config with the resolved source
+cfg["dataset_config"]["source"] = dataset_sources[dataset]
 
 print(cfg)
 
