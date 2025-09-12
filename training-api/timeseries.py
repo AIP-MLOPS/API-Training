@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from ml_trainer import AutoTrainer
 from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
+from clearml import Task
 
 load_dotenv()
 
@@ -51,7 +52,13 @@ if load_model:
         local_dest="."
     )
 
-
+# --------- ClearML task initialization --------
+task = Task.init(
+    project_name="API training",  # Name of the ClearML project
+    task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
+    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
+)
 #----------------- main config ----------------
 
 cfg = {
@@ -78,11 +85,13 @@ cfg = {
 
     "model_config": {
         "type": "tslib",
-        "name": model_name,  # Try "InceptionTime", "FCNPlus", "ResNetPlus", etc.
-        "task_name": "long_term_forecast",  # ✅ corrected task
+        "name": model_name, 
+        "task_name": "long_term_forecast", 
 
     }
 }
+
+task.connect(cfg)
 
 trainer = AutoTrainer(config=cfg)
 

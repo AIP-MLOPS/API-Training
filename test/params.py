@@ -45,7 +45,7 @@ cfg = {
 
     # Dataset
     "dataset_config": {
-        # "source": sources,
+        "name": 'cifar-10',
         "transform_config": transform
     },
     
