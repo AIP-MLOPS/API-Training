@@ -82,7 +82,7 @@ print(cfg)
 
 # now update the config with the resolved source
 print(dataset_sources[dataset])
-cfg["dataset_config"]["source"] = dataset_sources[dataset]
+cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
 
 print(cfg)
 
