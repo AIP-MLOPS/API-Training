@@ -53,12 +53,13 @@ if model_name not in ["resnet50", "efficientnet_b0"] and model_id not in ["resne
     raise ValueError("Invalid model name/id: choose from resnet50 or efficientnet_b0")
 
 # Dataset configuration
-if dataset == 'cifar-10':
-    sources = "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz"
-elif dataset == "stl10":
-    sources = "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
-else:
-    raise ValueError("Invalid dataset: choose either 'cifar-10' or 'stl10'")
+dataset_sources = {
+    "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
+    "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
+}
+
+if dataset not in dataset_sources:
+    raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
 
 # --------------     to load model -----------------
 
@@ -82,7 +83,8 @@ cfg = {
 
     # Dataset
     "dataset_config": {
-        "source": sources,
+        "name": dataset,             # <-- keep dataset name
+        "source": dataset_sources[dataset],  # <-- source resolved from mapping
         "transform_config": transform
     },
     
