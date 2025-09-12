@@ -107,7 +107,12 @@ cfg = {
 # Connect hyperparameters and other configurations to the ClearML task
 task.connect(cfg)
 
-trainer = AutoTrainer(config=cfg)
+if dataset not in dataset_sources:
+    raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
+
+cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
+
+# trainer = AutoTrainer(config=cfg)
 
 trainer.run()
 

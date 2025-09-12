@@ -79,9 +79,10 @@ dataset_sources = {
 
 }
 print(cfg)
+if dataset_sources[dataset] not in dataset_sources:
+    raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
 
 # now update the config with the resolved source
-print(dataset_sources[dataset])
 cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
 
 print(cfg)
