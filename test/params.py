@@ -75,7 +75,6 @@ task.connect(cfg)
 dataset_sources = {
     "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
     "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz",
-    'asghar data': 'asghar source'
 
 }
 print(cfg)
