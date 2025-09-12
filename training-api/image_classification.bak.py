@@ -1,15 +1,15 @@
 
-# import os
-# import torch
-# import torch.nn as nn
-# import torchvision.models as models
-# from torch.nn import functional as F
+import os
+import torch
+import torch.nn as nn
+import torchvision.models as models
+from torch.nn import functional as F
 from dotenv import load_dotenv
 
 from clearml import Task
 
-# from ml_trainer import AutoTrainer
-# from ml_trainer.base import AbstractModelArchitecture
+from ml_trainer import AutoTrainer
+from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
 
 
@@ -49,6 +49,8 @@ task = Task.init(
 )
 # ---------
 # Ensure valid model name/id
+if model_name not in ["resnet50", "efficientnet_b0"] and model_id not in ["resnet50_t", "efficientnet_b0"]:
+    raise ValueError("Invalid model name/id: choose from resnet50 or efficientnet_b0")
 
 # Dataset configuration
 dataset_sources = {
@@ -56,6 +58,8 @@ dataset_sources = {
     "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
 }
 
+if dataset not in dataset_sources:
+    raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
 
 # --------------     to load model -----------------
 
@@ -103,17 +107,14 @@ cfg = {
 # Connect hyperparameters and other configurations to the ClearML task
 task.connect(cfg)
 
-if cfg["dataset_config"]["name"] not in dataset_sources:
+if dataset not in dataset_sources:
     raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
-
-if cfg["model_config"]["name"] not in ["resnet50", "efficientnet_b0"]:
-    raise ValueError("Invalid model name/id: choose from resnet50 or efficientnet_b0")
 
 cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
 
 # trainer = AutoTrainer(config=cfg)
 
-# trainer.run()
+trainer.run()
 
 if save_model:
     local_model_id = manager.add_model(

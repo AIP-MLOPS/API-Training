@@ -72,12 +72,12 @@ cfg = {
 # Connect hyperparameters and other configurations to the ClearML task
 task.connect(cfg)
 
+# dataset handling
 dataset_sources = {
     "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
     "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz",
 
 }
-print(cfg)
 if cfg["dataset_config"]["name"] not in dataset_sources:
     raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
 
