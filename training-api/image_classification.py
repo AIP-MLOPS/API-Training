@@ -17,7 +17,7 @@ from aipmodel.model_registry import MLOpsManager
 # --------- ClearML task initialization --------
 task = Task.init(
     project_name="API training",  # Name of the ClearML project
-    task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
+    task_name=f"API Training",  # Name of the task
     task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
     reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
 )
