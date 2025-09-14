@@ -63,8 +63,8 @@ print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
     clearml_url=data_model_reg_cfg['clearml_url'],
-    clearml_access_key=data_model_reg_cfg['clearml_access'],
-    clearml_secret_key=data_model_reg_cfg['clearml_secret'],
+    clearml_access_key=data_model_reg_cfg['clearml_access_key'],
+    clearml_secret_key=data_model_reg_cfg['clearml_secret_key'],
     clearml_username=data_model_reg_cfg['clearml_username']
 )
 
