@@ -45,7 +45,7 @@ data_model_reg_cfg= {
     'CEPH_BUCKET': 'bucket',
 
     #clearml
-    'clearml_url': 'url'
+    'clearml_url': 'url',
     'clearml_access_key': 'access',
     'clearml_secret_key': 'secret',
     'clearml_username': 'testdario7',
