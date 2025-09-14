@@ -14,10 +14,13 @@ from aipmodel.model_registry import MLOpsManager
 
 
 load_dotenv()
-
+data_model_reg_cfg= {
+    'ceph': 'http://s3.cloud-ai.ir',
+}
+print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    clearml_url=os.environ["CLEARML_API_HOST"],
+    clearml_url=data_model_reg_cfg['ceph'],
     clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
     clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
     clearml_username=os.environ["CLEARML_USERNAME"]
