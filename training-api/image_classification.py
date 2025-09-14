@@ -38,14 +38,10 @@ data_model_reg_cfg= {
     'clearml_url': 'http://web.mlops.ai-lab.ir/api_old'
 }
 
-data_model_reg_cfg['s3_bucket'] = f"{data_model_reg_cfg['clearml_username']}-bucket"
+data_model_reg_cfg['CEPH_BUCKET'] = f"{data_model_reg_cfg['clearml_username']}-bucket"
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print(data_model_reg_cfg)
-os.environ["CEPH_BUCKET"] = data_model_reg_cfg['CEPH_BUCKET']
-os.environ["CEPH_ENDPOINT"] = data_model_reg_cfg['CEPH_ENDPOINT']
-os.environ["CEPH_ACCESS_KEY"] = data_model_reg_cfg['CEPH_ACCESS_KEY']
-os.environ["CEPH_SECRET_KEY"] = data_model_reg_cfg['CEPH_SECRET_KEY']
 
 print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
 print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
