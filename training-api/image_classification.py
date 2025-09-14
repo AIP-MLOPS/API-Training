@@ -16,7 +16,10 @@ from aipmodel.model_registry import MLOpsManager
 load_dotenv()
 data_model_reg_cfg= {
     'ceph': 'http://s3.cloud-ai.ir',
+    's3_access_key': '8HZE0U3P5VOSCPEOUN4G',
+    's3_secret_key': 'ihLqlXsauVYmiV83uu5kDdzAZzjlLlXYx05OIOwg',
 }
+
 print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
