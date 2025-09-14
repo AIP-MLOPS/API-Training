@@ -5,12 +5,15 @@ import os
 # import torchvision.models as models
 # from torch.nn import functional as F
 from dotenv import load_dotenv
+import requests
+import json
 
 from clearml import Task
 
 # from ml_trainer import AutoTrainer
 # from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
+
 
 
 load_dotenv()
@@ -116,6 +119,11 @@ if cfg["model_config"]["name"] not in ["resnet50", "efficientnet_b0"]:
     raise ValueError("Invalid model name/id: choose from resnet50 or efficientnet_b0")
 
 cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
+
+data_url= "http://172.15.30.79:8169/download-dataset"
+
+
+
 
 # trainer = AutoTrainer(config=cfg)
 
