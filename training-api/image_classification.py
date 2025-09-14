@@ -37,16 +37,29 @@ data_model_reg_cfg= {
     'clearml_username': 'testdario7',
     'clearml_url': 'http://web.mlops.ai-lab.ir/api_old'
 }
+data_model_reg_cfg= {
+    #ceph related
+    'CEPH_ENDPOINT': 'url',
+    'CEPH_ACCESS_KEY': 'access',
+    'CEPH_SECRET_KEY': 'secret',
+    'CEPH_BUCKET': 'bucket',
+
+    #clearml
+    'clearml_url': 'url'
+    'clearml_access': 'access',
+    'clearml_secret': 'secret',
+    'clearml_username': 'testdario7',
+}
 
 data_model_reg_cfg['CEPH_BUCKET'] = f"{data_model_reg_cfg['clearml_username']}-bucket"
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print(data_model_reg_cfg)
 
-print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
-print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
-print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
-print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
+# print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
+# print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
+# print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
+# print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
     clearml_url=data_model_reg_cfg['clearml_url'],
