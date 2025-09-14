@@ -46,8 +46,8 @@ data_model_reg_cfg= {
 
     #clearml
     'clearml_url': 'url'
-    'clearml_access': 'access',
-    'clearml_secret': 'secret',
+    'clearml_access_key': 'access',
+    'clearml_secret_key': 'secret',
     'clearml_username': 'testdario7',
 }
 
