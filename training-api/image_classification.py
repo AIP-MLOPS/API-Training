@@ -51,15 +51,18 @@ data_model_reg_cfg= {
     'clearml_username': 'testdario7',
 }
 
-data_model_reg_cfg['CEPH_BUCKET'] = f"{data_model_reg_cfg['clearml_username']}-bucket"
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print(data_model_reg_cfg)
+os.environ['CEPH_ENDPOINT'] = data_model_reg_cfg['CEPH_ENDPOINT']
+os.environ['CEPH_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
+os.environ['CEPH_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
+os.environ['CEPH_BUCKET'] = data_model_reg_cfg['CEPH_BUCKET']
 
-# print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
-# print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
-# print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
-# print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
+print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
+print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
+print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
+print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
     clearml_url=data_model_reg_cfg['clearml_url'],
