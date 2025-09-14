@@ -26,7 +26,7 @@ data_model_reg_cfg= {
 print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    clearml_url=data_model_reg_cfg['ceph'],
+    clearml_url=os.environ["CLEARML_URL"],
     clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
     clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
     clearml_username=os.environ["CLEARML_USERNAME"]
