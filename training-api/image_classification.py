@@ -39,7 +39,7 @@ data_model_reg_cfg= {
 }
 
 task.connect(data_model_reg_cfg)
-access = env [ ]
+
 print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
