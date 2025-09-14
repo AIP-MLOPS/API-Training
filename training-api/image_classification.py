@@ -39,7 +39,7 @@ data_model_reg_cfg= {
 }
 
 data_model_reg_cfg['s3_bucket'] = f"{data_model_reg_cfg['clearml_username']}-bucket"
-task.connect(data_model_reg_cfg, name=model_data_cfg)
+task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print(data_model_reg_cfg)
 os.environ["CEPH_BUCKET"] = data_model_reg_cfg['CEPH_BUCKET']
