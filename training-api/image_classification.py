@@ -26,24 +26,24 @@ load_dotenv()
 
 data_model_reg_cfg= {
     #ceph related
-    'ceph': 'some_url',
-    's3_access_key': 'access',
-    's3_secret_key': 'secret',
+    'ceph': 'http://172.15.20.153',
+    's3_access_key': '8HZE0U3P5VOSCPEOUN4G',
+    's3_secret_key': 'ihLqlXsauVYmiV83uu5kDdzAZzjlLlXYx05OIOwg',
     's3_bucket': 'bucket',
 
     #clearml
-    'clearml_access': 'access',
-    'clearml_secret': 'secret',
-    'clearml_username': 'username',
-    'clearml_api': 'api'
+    'clearml_access': '6C8CD3D76920C6D1F81FBBBCD188734C',
+    'clearml_secret': 'F3F98D9B5361768BF497DFFB8F63F6E9115C5314FDED76FF18E3B82997DFB6D5',
+    'clearml_username': 'testdario7',
+    'clearml_url': 'http://web.mlops.ai-lab.ir/api_old'
 }
 
+data_model_reg_cfg['s3_bucket'] = data_model_reg_cfg['clearml_username']
 task.connect(data_model_reg_cfg)
-
 print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    clearml_url=os.environ["CLEARML_URL"],
+    clearml_url=data_model_reg_cfg['clearml_url'],
     clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
     clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
     clearml_username=os.environ["CLEARML_USERNAME"]
