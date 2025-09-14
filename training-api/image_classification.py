@@ -14,15 +14,32 @@ from clearml import Task
 # from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
 
-
+# --------- ClearML task initialization --------
+task = Task.init(
+    project_name="API training",  # Name of the ClearML project
+    task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
+    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
+)
 
 load_dotenv()
+
 data_model_reg_cfg= {
-    'ceph': 'http://s3.cloud-ai.ir',
-    's3_access_key': '8HZE0U3P5VOSCPEOUN4G',
-    's3_secret_key': 'ihLqlXsauVYmiV83uu5kDdzAZzjlLlXYx05OIOwg',
+    #ceph related
+    'ceph': 'some_url',
+    's3_access_key': 'access',
+    's3_secret_key': 'secret',
+    's3_bucket': 'bucket',
+
+    #clearml
+    'clearml_access': 'access',
+    'clearml_secret': 'secret',
+    'clearml_username': 'username',
+    'clearml_api': 'api'
 }
 
+task.connect(data_model_reg_cfg)
+access = env [ ]
 print(data_model_reg_cfg)
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
@@ -49,13 +66,7 @@ transform = {
             "normalize_std": [0.5, 0.5, 0.5]
         }
 
-# --------- ClearML task initialization --------
-task = Task.init(
-    project_name="API training",  # Name of the ClearML project
-    task_name=f"{dataset} - {model_name} - API Training",  # Name of the task
-    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
-    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
-)
+
 # ---------
 # Ensure valid model name/id
 
