@@ -26,10 +26,10 @@ load_dotenv()
 
 data_model_reg_cfg= {
     #ceph related
-    'ceph': 'http://172.15.20.153',
-    's3_access_key': '8HZE0U3P5VOSCPEOUN4G',
-    's3_secret_key': 'ihLqlXsauVYmiV83uu5kDdzAZzjlLlXYx05OIOwg',
-    's3_bucket': 'bucket',
+    'CEPH_ENDPOINT': 'http://172.15.20.153',
+    'CEPH_ACCESS_KEY': '8HZE0U3P5VOSCPEOUN4G',
+    'CEPH_SECRET_KEY': 'ihLqlXsauVYmiV83uu5kDdzAZzjlLlXYx05OIOwg',
+    'CEPH_BUCKET': 'bucket',
 
     #clearml
     'clearml_access': '6C8CD3D76920C6D1F81FBBBCD188734C',
@@ -38,15 +38,25 @@ data_model_reg_cfg= {
     'clearml_url': 'http://web.mlops.ai-lab.ir/api_old'
 }
 
-data_model_reg_cfg['s3_bucket'] = data_model_reg_cfg['clearml_username']
+data_model_reg_cfg['s3_bucket'] = f"{data_model_reg_cfg['clearml_username']}-bucket"
 task.connect(data_model_reg_cfg)
+
 print(data_model_reg_cfg)
+os.environ["CEPH_BUCKET"] = data_model_reg_cfg['CEPH_BUCKET']
+os.environ["CEPH_ENDPOINT"] = data_model_reg_cfg['CEPH_ENDPOINT']
+os.environ["CEPH_ACCESS_KEY"] = data_model_reg_cfg['CEPH_ACCESS_KEY']
+os.environ["CEPH_SECRET_KEY"] = data_model_reg_cfg['CEPH_SECRET_KEY']
+
+print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
+print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
+print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
+print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
     clearml_url=data_model_reg_cfg['clearml_url'],
-    clearml_access_key=os.environ["CLEARML_API_ACCESS_KEY"],
-    clearml_secret_key=os.environ["CLEARML_API_SECRET_KEY"],
-    clearml_username=os.environ["CLEARML_USERNAME"]
+    clearml_access_key=data_model_reg_cfg['clearml_access'],
+    clearml_secret_key=data_model_reg_cfg['clearml_secret'],
+    clearml_username=data_model_reg_cfg['clearml_username']
 )
 
 # ---------- Variables -------------
