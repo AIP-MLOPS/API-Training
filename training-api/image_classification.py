@@ -195,7 +195,8 @@ cfg = {
 }
 # Data URL
 url = get_dataset_download_urls(
-    url="https://api.mlops.ai-lab.ir/data/download-dataset",
+    # url="https://api.mlops.ai-lab.ir/data/download-dataset",
+    url="https://data-ingestion-api-service:8169/download-dataset",
     dataset_name=cfg["dataset_config"]["name"],
     user_name=data_model_reg_cfg['clearml_username'],
     clearml_access_key=data_model_reg_cfg['clearml_access_key'],
