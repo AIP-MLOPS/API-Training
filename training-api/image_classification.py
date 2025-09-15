@@ -58,6 +58,7 @@ def get_dataset_download_urls(
     response = requests.post(url, json=payload, headers=headers, timeout=10, proxies={"http": None, "https": None})
     # response.raise_for_status()
     data = response.json()
+    print(data)
     
     # Filter for .tar.gz and .csv files only
     download_urls = [
