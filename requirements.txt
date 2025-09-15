@@ -1,7 +1,7 @@
 #--trusted-host 192.168.244.44
 #--index-url http://192.168.244.44:8081/repository/pypi-proxy/simple
 
-ml-trainer-sdk==0.1.4
+ml-trainer-sdk==0.1.4.1
 timm
 albumentations
 patool
