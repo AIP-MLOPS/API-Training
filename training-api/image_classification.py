@@ -33,7 +33,7 @@ def get_dataset_download_urls(
     Returns:
         List of download URLs for .tar.gz and .csv files only
     """
-    base = "http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download"
+    base = "http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download-dataset"
 
     # 1) Confirm what you’re actually hitting
     r = requests.post(f"{base}/download-dataset", json={}, timeout=10,
@@ -55,7 +55,7 @@ def get_dataset_download_urls(
         "Content-Type": "application/json"
     }
     
-    response = requests.post(url, json=payload, headers=headers)
+    response = requests.post(url, json=payload, headers=headers, timeout=10, proxies={"http": None, "https": None})
     response.raise_for_status()
     data = response.json()
     
