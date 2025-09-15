@@ -112,7 +112,7 @@ if dataset not in dataset_sources:
 
 cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
 
-# trainer = AutoTrainer(config=cfg)
+trainer = AutoTrainer(config=cfg)
 
 trainer.run()
 

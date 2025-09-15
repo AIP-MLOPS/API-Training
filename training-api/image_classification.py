@@ -1,9 +1,9 @@
 
 import os
-# import torch
-# import torch.nn as nn
-# import torchvision.models as models
-# from torch.nn import functional as F
+import torch
+import torch.nn as nn
+import torchvision.models as models
+from torch.nn import functional as F
 from dotenv import load_dotenv
 import requests
 import json
@@ -158,9 +158,9 @@ data_url= "http://172.15.30.79:8169/download-dataset"
 
 
 
-# trainer = AutoTrainer(config=cfg)
+trainer = AutoTrainer(config=cfg)
 
-# trainer.run()
+trainer.run()
 
 if save_model:
     local_model_id = manager.add_model(
