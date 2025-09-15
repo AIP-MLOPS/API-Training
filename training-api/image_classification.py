@@ -44,6 +44,7 @@ def get_dataset_download_urls(
         "s3_endpoint_url": s3_endpoint_url,
         "download_method": download_method
     }
+    print(payload)
     
     headers = {
         "accept": "application/json",
