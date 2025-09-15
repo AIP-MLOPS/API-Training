@@ -200,9 +200,9 @@ print(cfg)
 
 task.connect(cfg)
 url = get_dataset_download_urls(
-    # url="https://api.mlops.ai-lab.ir/data/download-dataset",
+    # url="http://api.mlops.ai-lab.ir/data/download-dataset",
     url="http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download-dataset",
-    # url="https://data-ingestion-api-service:8169/download-dataset",
+    # url="http://data-ingestion-api-service:8169/download-dataset",
     dataset_name=cfg["dataset_config"]["name"],
     user_name=data_model_reg_cfg['clearml_username'],
     clearml_access_key=data_model_reg_cfg['clearml_access_key'],
