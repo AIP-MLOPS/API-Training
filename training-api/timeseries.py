@@ -175,7 +175,7 @@ cfg = {
     "dataset_config": {
         "name": 'dataset',
         "source": 'url',
-        # "target_column": 'target',
+        "target_column": 'target',
     },
 
     # Model save
