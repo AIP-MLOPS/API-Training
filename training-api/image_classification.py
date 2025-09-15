@@ -193,10 +193,26 @@ cfg = {
         "pretrained": True
     }
 }
+import requests
+
+base = "http://172.15.30.79:8169"
+
+# 1) Confirm what you’re actually hitting
+r = requests.post(f"{base}/download-dataset", json={}, timeout=10,
+                  proxies={"http": None, "https": None})
+print("REQ:", r.request.method, r.request.url)
+print("STATUS:", r.status_code)
+print("BODY:", r.text[:400])
+
+# 2) Probe the API surface
+print("openapi:", requests.get(f"{base}/openapi.json",
+                              proxies={"http": None, "https": None}, timeout=5).status_code)
+print("docs:", requests.get(f"{base}/docs",
+                           proxies={"http": None, "https": None}, timeout=5).status_code)
 # Data URL
 url = get_dataset_download_urls(
-    # url="https://api.mlops.ai-lab.ir/data/download-dataset",
-    url="https://data-ingestion-api-service:8169/download-dataset",
+    url="https://api.mlops.ai-lab.ir/data/download-dataset",
+    # url="https://data-ingestion-api-service:8169/download-dataset",
     dataset_name=cfg["dataset_config"]["name"],
     user_name=data_model_reg_cfg['clearml_username'],
     clearml_access_key=data_model_reg_cfg['clearml_access_key'],
