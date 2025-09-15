@@ -174,7 +174,8 @@ cfg = {
     "split_ratio": split_ratio,
     "lr": lr,
     "epochs": epochs,
-    "num_classes": 10,  
+    "num_classes": 10,
+    "device": "cpu",    
 
     # Dataset
     "dataset_config": {

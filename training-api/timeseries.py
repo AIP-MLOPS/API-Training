@@ -169,12 +169,13 @@ cfg = {
     "seq_len": 12,
     "pred_len": 1,
     "input_channels": 1,  
-    "output_size": 1,     
+    "output_size": 1,
+    "device": "cpu",       
 
     "dataset_config": {
         "name": 'dataset',
         "source": 'url',
-        # "target_column": 'target',
+        "target_column": 'target',
     },
 
     # Model save
