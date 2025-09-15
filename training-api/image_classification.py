@@ -216,6 +216,7 @@ cfg = {
 # print("docs:", requests.get(f"{base}/docs",
 #                            proxies={"http": None, "https": None}, timeout=5).status_code)
 # Data URL
+task.connect(cfg)
 url = get_dataset_download_urls(
     # url="https://api.mlops.ai-lab.ir/data/download-dataset",
     url="http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download-dataset",
@@ -230,7 +231,6 @@ url = get_dataset_download_urls(
 )
 
 # Connect hyperparameters and other configurations to the ClearML task
-task.connect(cfg)
 
 # if cfg["dataset_config"]["name"] not in dataset_sources:
 #     raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
