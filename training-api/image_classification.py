@@ -10,9 +10,59 @@ import json
 
 from clearml import Task
 
-# from ml_trainer import AutoTrainer
-# from ml_trainer.base import AbstractModelArchitecture
+from ml_trainer import AutoTrainer
+from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
+
+#  ====================== Data Registry =========================
+
+def get_dataset_download_urls(
+    url: str,
+    dataset_name: str,
+    user_name: str,
+    clearml_access_key: str,
+    clearml_secret_key: str,
+    s3_access_key: str,
+    s3_secret_key: str,
+    s3_endpoint_url: str,
+    download_method: str = "presigned_urls"
+):
+    """
+    Request presigned download URLs for a dataset.
+
+    Returns:
+        List of download URLs for .tar.gz and .csv files only
+    """
+    
+    payload = {
+        "dataset_name": dataset_name,
+        "user_name": user_name,
+        "clearml_access_key": clearml_access_key,
+        "clearml_secret_key": clearml_secret_key,
+        "s3_access_key": s3_access_key,
+        "s3_secret_key": s3_secret_key,
+        "s3_endpoint_url": s3_endpoint_url,
+        "download_method": download_method
+    }
+    
+    headers = {
+        "accept": "application/json",
+        "Content-Type": "application/json"
+    }
+    
+    response = requests.post(url, json=payload, headers=headers)
+    response.raise_for_status()
+    data = response.json()
+    
+    # Filter for .tar.gz and .csv files only
+    download_urls = [
+        file["download_url"]
+        for file in data.get("download_info", {}).get("files", [])
+        if file["filename"].endswith(".tar.gz") or file["filename"].endswith(".csv")
+    ]
+    return download_urls[0]
+
+
 
 # --------- ClearML task initialization --------
 task = Task.init(
@@ -59,10 +109,11 @@ os.environ['CEPH_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
 os.environ['CEPH_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
 os.environ['CEPH_BUCKET'] = data_model_reg_cfg['CEPH_BUCKET']
 
-print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
-print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
-print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
-print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
+# print("CEPH_BUCKET:", os.environ["CEPH_BUCKET"])
+# print("CEPH_ENDPOINT:", os.environ["CEPH_ENDPOINT"])
+# print("CEPH_ACCESS_KEY:", os.environ["CEPH_ACCESS_KEY"])
+# print("CEPH_SECRET_KEY:", os.environ["CEPH_SECRET_KEY"])
+
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
     clearml_url=data_model_reg_cfg['clearml_url'],
@@ -93,10 +144,10 @@ transform = {
 # Ensure valid model name/id
 
 # Dataset configuration
-dataset_sources = {
-    "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
-    "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
-}
+# dataset_sources = {
+#     "cifar-10": "https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz",
+#     "stl10": "http://ai.stanford.edu/~acoates/stl10/stl10_binary.tar.gz"
+# }
 
 
 # --------------     to load model -----------------
@@ -122,7 +173,7 @@ cfg = {
     # Dataset
     "dataset_config": {
         "name": dataset,             # <-- keep dataset name
-        "source": dataset_sources[dataset],  # <-- source resolved from mapping
+        "source": 'url',  # <-- source resolved from datalayer
         "transform_config": transform
     },
     
@@ -141,19 +192,29 @@ cfg = {
         "pretrained": True
     }
 }
+# Data URL
+url = get_dataset_download_urls(
+    url="http://172.15.30.79:8169/download-dataset",
+    dataset_name=cfg["dataset_config"]["name"],
+    user_name=data_model_reg_cfg['clearml_username'],
+    clearml_access_key=data_model_reg_cfg['clearml_access_key'],
+    clearml_secret_key=data_model_reg_cfg['clearml_secret_key'],
+    s3_access_key=data_model_reg_cfg['CEPH_ACCESS_KEY'],
+    s3_secret_key=data_model_reg_cfg['CEPH_SECRET_KEY'],
+    s3_endpoint_url=data_model_reg_cfg['CEPH_ENDPOINT']
+)
 
 # Connect hyperparameters and other configurations to the ClearML task
 task.connect(cfg)
 
-if cfg["dataset_config"]["name"] not in dataset_sources:
-    raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
+# if cfg["dataset_config"]["name"] not in dataset_sources:
+#     raise ValueError(f"Invalid dataset: {dataset}. Choose from {list(dataset_sources.keys())}")
 
-if cfg["model_config"]["name"] not in ["resnet50", "efficientnet_b0"]:
-    raise ValueError("Invalid model name/id: choose from resnet50 or efficientnet_b0")
+# if cfg["model_config"]["name"] not in ["resnet50", "efficientnet_b0"]:
+#     raise ValueError("Invalid model name/id: choose from resnet50 or efficientnet_b0")
 
-cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
-
-data_url= "http://172.15.30.79:8169/download-dataset"
+# cfg["dataset_config"]["source"] = dataset_sources[cfg["dataset_config"]["name"]]
+cfg["dataset_config"]["source"] = url
 
 
 
