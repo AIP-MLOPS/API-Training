@@ -86,9 +86,9 @@ cfg = {
     }
 }
 
-trainer = AutoTrainer(config=cfg)
+# trainer = AutoTrainer(config=cfg)
 
-trainer.run()
+# trainer.run()
 
 # if save_model:
 #     local_model_id = manager.add_model(
