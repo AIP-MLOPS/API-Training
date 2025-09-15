@@ -33,7 +33,11 @@ def get_dataset_download_urls(
     Returns:
         List of download URLs for .tar.gz and .csv files only
     """
-    
+    base = "http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download"
+
+    # 1) Confirm what you’re actually hitting
+    r = requests.post(f"{base}/download-dataset", json={}, timeout=10,
+                  proxies={"http": None, "https": None})
     payload = {
         "dataset_name": dataset_name,
         "user_name": user_name,
@@ -213,7 +217,7 @@ print("docs:", requests.get(f"{base}/docs",
 # Data URL
 url = get_dataset_download_urls(
     # url="https://api.mlops.ai-lab.ir/data/download-dataset",
-    url="http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169",
+    url="http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download-dataset",
     # url="https://data-ingestion-api-service:8169/download-dataset",
     dataset_name=cfg["dataset_config"]["name"],
     user_name=data_model_reg_cfg['clearml_username'],
