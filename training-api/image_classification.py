@@ -190,13 +190,13 @@ cfg = {
         "type": "timm",
         "name": model_name,
         "pretrained": True
-        "reg": "model_reg_name" 
+        "model_reg": "model_reg_name" 
     }
 }
 
 task.connect(cfg)
 
-model_reg = cfg["model_config"]["reg"]
+model_reg = cfg["model_config"]["model_reg"]
 
 # --------------     to load model -----------------
 
