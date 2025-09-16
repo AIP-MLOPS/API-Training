@@ -151,14 +151,7 @@ model_id = "Autoformer"
 # else:
 #     raise ValueError("Invalid dataset: choose either 'airline-passengers' or 'oil-spill'")
 
-# --------------     to load model -----------------
-if load_model: 
-    model_id = manager.get_model_id_by_name(model_name)
 
-    manager.get_model(
-        model_name= model_name,
-        local_dest="."
-    )
 
 #----------------- main config ----------------
 
@@ -191,14 +184,26 @@ cfg = {
     "model_config": {
         "type": "tslib",
         "name": model_name, 
-        "task_name": "long_term_forecast", 
+        "task_name": "long_term_forecast",
+        "reg": "model_reg_name" 
 
     }
 }
 
+task.connect(cfg)
+
+model_reg = dataset_name=cfg["model_config"]["reg"]
+# --------------     to load model -----------------
+if load_model: 
+    model_id = manager.get_model_id_by_name(model_reg)
+
+    manager.get_model(
+        model_name= model_reg,
+        local_dest="."
+    )
+
 print(cfg)
 
-task.connect(cfg)
 url = get_dataset_download_urls(
     # url="http://api.mlops.ai-lab.ir/data/download-dataset",
     url="http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download-dataset",
@@ -222,6 +227,6 @@ if save_model:
     local_model_id = manager.add_model(
         source_type="local",
         source_path="model/",
-        model_name=model_save_name,
+        model_name=model_reg,
         code_path="." , 
     )
