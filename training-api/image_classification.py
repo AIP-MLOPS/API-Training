@@ -156,15 +156,7 @@ transform = {
 # }
 
 
-# --------------     to load model -----------------
 
-if load_model: 
-    model_id = manager.get_model_id_by_name(model_id)
-
-    manager.get_model(
-        model_name= model_name,  # or any valid model ID
-        local_dest="."
-)
 
 #----------------- main config ----------------
 cfg = {
@@ -197,8 +189,23 @@ cfg = {
         "type": "timm",
         "name": model_name,
         "pretrained": True
+        "reg": "model_reg_name" 
     }
 }
+
+task.connect(cfg)
+
+model_reg = dataset_name=cfg["model_config"]["reg"]
+
+# --------------     to load model -----------------
+
+if load_model: 
+    model_id = manager.get_model_id_by_name(model_id)
+
+    manager.get_model(
+        model_name= model_reg,  # or any valid model ID
+        local_dest="."
+)
 # import requests
 
 # # base = "http://172.15.30.79:8169"
@@ -217,7 +224,6 @@ cfg = {
 # print("docs:", requests.get(f"{base}/docs",
 #                            proxies={"http": None, "https": None}, timeout=5).status_code)
 # Data URL
-task.connect(cfg)
 url = get_dataset_download_urls(
     # url="https://api.mlops.ai-lab.ir/data/download-dataset",
     url="http://data-ingestion-api-service.aip-mlops-service.svc.cluster.local:8169/download-dataset",
@@ -253,6 +259,6 @@ if save_model:
     local_model_id = manager.add_model(
         source_type="local",
         source_path="model/",
-        model_name=model_save_name,
+        model_name=model_reg,
         code_path="." , # ← Replace with the path to your model.py if you have it
     )
