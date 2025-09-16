@@ -1,7 +1,7 @@
 --extra-index-url https://pypi.org/simple/
 #--trusted-host pypi.org
 
-ml-trainer-sdk==0.1.4.3
+ml-trainer-sdk==0.1.4.4
 timm
 albumentations
 patool
