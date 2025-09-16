@@ -6,7 +6,7 @@ from torch.nn import functional as F
 from dotenv import load_dotenv
 import requests
 import json
-
+import time
 from clearml import Task
 
 from ml_trainer import AutoTrainer
@@ -185,14 +185,13 @@ cfg = {
         "type": "tslib",
         "name": model_name, 
         "task_name": "long_term_forecast",
-        "reg": "model_reg_name" 
-
+        "model_reg": "model_reg_name" 
     }
 }
 
 task.connect(cfg)
-
-model_reg = dataset_name=cfg["model_config"]["reg"]
+print(cfg)
+model_reg = cfg["model_config"]["model_reg"]
 # --------------     to load model -----------------
 if load_model: 
     model_id = manager.get_model_id_by_name(model_reg)
@@ -227,6 +226,6 @@ if save_model:
     local_model_id = manager.add_model(
         source_type="local",
         source_path="model/",
-        model_name=model_reg,
+        model_name = model_reg + "_" + str(int(time.time())),
         code_path="." , 
     )
