@@ -189,7 +189,7 @@ cfg = {
     "model_config": {
         "type": "timm",
         "name": model_name,
-        "pretrained": True
+        "pretrained": True,
         "model_reg": "model_reg_name" 
     }
 }
