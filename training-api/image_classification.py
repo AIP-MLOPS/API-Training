@@ -7,6 +7,7 @@ from torch.nn import functional as F
 from dotenv import load_dotenv
 import requests
 import json
+import time
 
 from clearml import Task
 
@@ -195,12 +196,12 @@ cfg = {
 
 task.connect(cfg)
 
-model_reg = dataset_name=cfg["model_config"]["reg"]
+model_reg = cfg["model_config"]["reg"]
 
 # --------------     to load model -----------------
 
 if load_model: 
-    model_id = manager.get_model_id_by_name(model_id)
+    model_id = manager.get_model_id_by_name(model_reg)
 
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
@@ -259,6 +260,6 @@ if save_model:
     local_model_id = manager.add_model(
         source_type="local",
         source_path="model/",
-        model_name=model_reg,
+        model_name = model_reg + "_" + str(int(time.time())),
         code_path="." , # ← Replace with the path to your model.py if you have it
     )
