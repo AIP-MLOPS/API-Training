@@ -2,7 +2,7 @@ from clearml import Task
 
 task = Task.init(
     project_name="API training",
-    task_name=f"{dataset} - {model_name} - API Training",  
+    task_name= "API Training",  
     task_type=Task.TaskTypes.optimizer, 
     reuse_last_task_id=False  
 )
