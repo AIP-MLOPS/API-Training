@@ -24,12 +24,17 @@ cfg= {
         "model_name": "test_model",
         "model_params": "test_params",
     }
+    
 
 }
 
 
 # Connect hyperparameters and other configurations to the ClearML task
 task.connect(cfg)
+user_config = {
+    'ceph': 'ceph_data'
+}
+task.connect(cfg, name= "user")
 
 # dataset handling
 
