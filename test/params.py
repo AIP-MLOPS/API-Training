@@ -34,7 +34,7 @@ task.connect(cfg)
 user_config = {
     'ceph': 'ceph_data'
 }
-task.connect(cfg, name= "user")
+task.connect(user_config, name= "user")
 
 # dataset handling
 
