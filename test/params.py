@@ -40,3 +40,4 @@ task.connect(user_config, name= "user")
 
 
 print(cfg)
+print(user_config)
