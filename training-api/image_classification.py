@@ -1,18 +1,12 @@
 
 import os
-import torch
-import torch.nn as nn
-import torchvision.models as models
-from torch.nn import functional as F
 from dotenv import load_dotenv
 import requests
-import json
 import time
 
 from clearml import Task
 
 from ml_trainer import AutoTrainer
-from ml_trainer.base import AbstractModelArchitecture
 from aipmodel.model_registry import MLOpsManager
 
 #  ====================== Data Registry =========================
