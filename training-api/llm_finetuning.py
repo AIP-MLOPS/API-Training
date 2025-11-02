@@ -6,13 +6,14 @@ import requests
 import time
 from pathlib import Path
 
+import torch
 from clearml import Task
 from transformers import TrainerCallback
 
 from ml_trainer import AutoTrainer
 from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
-
+torch._dynamo.config.disable = True
 
 # import the torch callback for checkpointing
 # import os
