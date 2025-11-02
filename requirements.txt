@@ -9,7 +9,7 @@ ml-trainer-sdk==0.2.3
 #sktime
 #PyWavelets
 python-dotenv
-aipmodel==0.2.28
+aipmodel==0.2.35
 boto3
 huggingface-hub>=0.34.0,<1.0
 clearml
