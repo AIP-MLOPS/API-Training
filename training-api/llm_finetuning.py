@@ -1,5 +1,6 @@
 import os
 os.environ["TORCH_DISABLE_DYNAMO"] = "1"
+os.environ["UNSLOTH_COMPILE_DISABLE"] = "1"
 from dotenv import load_dotenv
 import requests
 import time
