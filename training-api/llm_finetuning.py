@@ -141,7 +141,8 @@ if config["trainer_config"]["load_model"] is not None:
         model_name= model_reg,  # or any valid model ID
         local_dest="./loaded_model"
     )
-    model_dir = f'./loaded_model/{model_id}/'
+    # model_dir = f'./loaded_model/{model_id}/'
+    model_dir = f'./{model_id}/'
     # model_dir = "loaded_model/model_files/"
 
     # Find the first folder inside model_dir
@@ -154,7 +155,8 @@ if config["trainer_config"]["load_model"] is not None:
     checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
 
     # Set the config
-    config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
+    # config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
+    config["model_name"] = f'./{model_id}/{checkpoint_folder}'
     print(f"Model path set to: {config['model_name']}")
 
     # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
