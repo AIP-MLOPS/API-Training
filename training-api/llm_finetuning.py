@@ -4,6 +4,8 @@ import requests
 import time
 from pathlib import Path
 
+import torch
+import builtins
 from clearml import Task
 from transformers import TrainerCallback
 
@@ -12,6 +14,9 @@ from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
 
 
+# Allow ClearML's patched import in the compilation graph
+if hasattr(builtins, '__org_import__'):
+    torch.compiler.allow_in_graph(builtins.__org_import__)
 # import the torch callback for checkpointing
 # import os
 # import shutil
