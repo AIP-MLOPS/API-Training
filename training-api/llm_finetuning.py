@@ -135,6 +135,7 @@ model_reg = config["model_name"]
 
 if config["trainer_config"]["load_model"] is not None: 
     model_id = manager.get_model_id_by_name(model_reg)
+    os.makedirs("loaded_model", exist_ok=True)
 
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
