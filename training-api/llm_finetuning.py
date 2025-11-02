@@ -121,7 +121,7 @@ config = {
         "resume_from_checkpoint": None,
         "callbacks": None,
 
-        "load_model": None,  # set to True to load model from model registry
+        "load_model": True,  # set to True to load model from model registry
         "save_model": None,  # set to True to save model to model registry
     },
 }
@@ -138,9 +138,10 @@ if config["trainer_config"]["load_model"] is not None:
 
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
-        local_dest="loaded_model/"
+        local_dest="./loaded_model/"
     )
-    model_dir = f'loaded_model/{model_id}/'
+    model_dir = f'./loaded_model/{model_id}/'
+    # model_dir = "loaded_model/model_files/"
 
     # Find the first folder inside model_dir
     subfolders = [f for f in os.listdir(model_dir) if os.path.isdir(os.path.join(model_dir, f))]
