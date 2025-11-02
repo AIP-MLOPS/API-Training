@@ -134,6 +134,7 @@ model_reg = config["model_name"]
 
 if config["trainer_config"]["load_model"] is not None: 
     model_id = manager.get_model_id_by_name(model_reg)
+    print(manager.ceph.is_folder("models/eba075dfabed4f7fbecbfeb7e54871ca/"))
     os.makedirs("loaded_model", exist_ok=True)
 
     manager.get_model(
