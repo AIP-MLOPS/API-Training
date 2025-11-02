@@ -4,9 +4,6 @@ import requests
 import time
 from pathlib import Path
 
-import torch
-import builtins
-os.environ['CLEARML_DISABLE_IMPORT_BINDING']='1'
 from clearml import Task
 from transformers import TrainerCallback
 
@@ -15,9 +12,6 @@ from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
 
 
-# Allow ClearML's patched import in the compilation graph
-if hasattr(builtins, '__org_import__'):
-    torch.compiler.allow_in_graph(builtins.__org_import__)
 # import the torch callback for checkpointing
 # import os
 # import shutil
@@ -31,8 +25,7 @@ task = Task.init(
     project_name="API training",  # Name of the ClearML project
     task_name=f"API Training",  # Name of the task
     task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
-    reuse_last_task_id=False,  # Whether to reuse the last task ID (set to False for a new task each time)
-    auto_connect_frameworks={'pytorch': False}
+    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
 )
 ## ====================== Data Registry =========================
 load_dotenv()
