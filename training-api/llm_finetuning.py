@@ -138,7 +138,7 @@ if config["trainer_config"]["load_model"] is not None:
 
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
-        local_dest="loaded_model"
+        local_dest="./loaded_model/"
     )
     model_dir = f'./loaded_model/{model_id}/'
     # model_dir = "loaded_model/model_files/"
