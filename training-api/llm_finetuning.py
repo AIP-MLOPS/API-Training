@@ -17,7 +17,7 @@ from data.sdk.download_sdk import s3_download
 # Allow ClearML's patched import in the compilation graph
 if hasattr(builtins, '__org_import__'):
     torch.compiler.allow_in_graph(builtins.__org_import__)
-os.environ['CLEARML_DISABLE_IMPORT_BINDING'] = 1
+os.environ['CLEARML_DISABLE_IMPORT_BINDING']='1'
 # import the torch callback for checkpointing
 # import os
 # import shutil
