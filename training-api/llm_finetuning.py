@@ -1,6 +1,4 @@
 import os
-os.environ["TORCH_DISABLE_DYNAMO"] = "1"
-os.environ["UNSLOTH_COMPILE_DISABLE"] = "1"
 from dotenv import load_dotenv
 import requests
 import time
@@ -13,6 +11,7 @@ from transformers import TrainerCallback
 from ml_trainer import AutoTrainer
 from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
+
 torch._dynamo.config.disable = True
 
 # import the torch callback for checkpointing
@@ -88,8 +87,8 @@ class PrintSaveDirCallback(TrainerCallback):
 
 config = {
     "task": "llm_finetuning",
-    "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
-    # "model_name": "Qwen/Qwen2.5-0.5B-Instruct_1762009294",
+    # "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+    "model_name": "Qwen/Qwen2.5-0.5B-Instruct_1762009294_1762010845",
 
     # -----------------------------
     # DATASET CONFIG
@@ -108,7 +107,8 @@ config = {
     "trainer_config": {
         "dataset_text_field": "text",
         "batch_size": 2, # *
-        "epochs": 1, # *
+        # "epochs": 1, # *
+        "epochs": None, # *
         "learning_rate": 1e-4, # *
 
         
@@ -127,6 +127,7 @@ config = {
 }
 task.connect(config)
 
+print(config)
 
 model_reg = config["model_name"]
 
