@@ -107,7 +107,7 @@ config = {
         "dataset_text_field": "text",
         "batch_size": 2, # *
         # "epochs": 1, # *
-        "epochs": None, # *
+        "epochs": 1, # *
         "learning_rate": 1e-4, # *
 
         
