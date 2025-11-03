@@ -140,6 +140,7 @@ if config["trainer_config"]["load_model"] is not None:
     result = bool(contents) and any(obj["Key"] != key for obj in contents)
     print("CONTENTS:", contents)
     print("RESULTS:", result)
+    print("s3 client information:", manager.CEPH_ENDPOINT_URL, manager.CEPH_USER_BUCKET, manager.CEPH_ADMIN_ACCESS_KEY, manager.CEPH_ADMIN_SECRET_KEY)
     os.makedirs("loaded_model", exist_ok=True)
 
     manager.get_model(
