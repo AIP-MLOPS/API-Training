@@ -44,6 +44,19 @@ data_model_reg_cfg= {
     'clearml_secret_key': 'C60E7BD316A59D867D083BABD50B161EF2BFB8BDAADD59935978E546009F923E',
     'clearml_username': 'datauserv2',
 }
+data_model_reg_cfg= {
+    #ceph related
+    'CEPH_ENDPOINT': 'default',
+    'CEPH_ACCESS_KEY': 'default',
+    'CEPH_SECRET_KEY': 'default',
+    'CEPH_BUCKET': 'default',
+
+    #clearml
+    'clearml_url': 'default',
+    'clearml_access_key': 'default',
+    'clearml_secret_key': 'default',
+    'clearml_username': 'default',
+}
 
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
