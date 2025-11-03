@@ -154,16 +154,21 @@ if config["trainer_config"]["load_model"] is not None:
     subfolders = [f for f in os.listdir(model_dir) if os.path.isdir(os.path.join(model_dir, f))]
 
     if not subfolders:
-        raise FileNotFoundError(f"No checkpoint folders found in {model_dir}")
+        print(f"No checkpoint folders found in {model_dir}")
 
     # You can choose the first one or specify logic (e.g., latest modified)
     checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
 
+    if subfolders:
+        config["model_name"] = f'./{model_id}/{checkpoint_folder}'
+        print(f"Checkpoint folder found: {checkpoint_folder}")
+    else:
+        config["model_name"] = f'./{model_id}/'
+        print(f"Model path set to: {config['model_name']}")
+
     # Set the config
-    # config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
     # config["model_name"] = f'./{model_id}/{checkpoint_folder}'
-    config["model_name"] = f'./{model_id}/'
-    print(f"Model path set to: {config['model_name']}")
+    # config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
 
     # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
     
