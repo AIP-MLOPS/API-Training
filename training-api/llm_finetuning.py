@@ -157,9 +157,9 @@ if config["trainer_config"]["load_model"] is not None:
         print(f"No checkpoint folders found in {model_dir}")
 
     # You can choose the first one or specify logic (e.g., latest modified)
-    checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
 
     if subfolders:
+        checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
         config["model_name"] = f'./{model_id}/{checkpoint_folder}'
         print(f"Checkpoint folder found: {checkpoint_folder}")
     else:
