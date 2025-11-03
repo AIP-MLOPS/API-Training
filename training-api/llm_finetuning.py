@@ -120,7 +120,7 @@ config = {
         "resume_from_checkpoint": None,
         "callbacks": None,
 
-        "load_model": None,  # set to True to load model from model registry
+        "load_model": True,  # set to True to load model from model registry
         "save_model": None,  # set to True to save model to model registry
     },
 }
@@ -162,7 +162,8 @@ if config["trainer_config"]["load_model"] is not None:
 
     # Set the config
     # config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
-    config["model_name"] = f'./{model_id}/{checkpoint_folder}'
+    # config["model_name"] = f'./{model_id}/{checkpoint_folder}'
+    config["model_name"] = f'./{model_id}/'
     print(f"Model path set to: {config['model_name']}")
 
     # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
