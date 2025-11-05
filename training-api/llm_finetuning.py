@@ -226,8 +226,9 @@ trainer = AutoTrainer(config=config)
 trainer.run()
 
 if config["trainer_config"]["save_model"] is not None:
+    trainer.model.save("./full_model_save/")
     local_model_id = manager.add_model(
         source_type="local",
-        source_path="model/",
+        source_path="full_model_save/",
         model_name = model_reg + "_" + str(int(time.time())),
     )

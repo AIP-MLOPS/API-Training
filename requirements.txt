@@ -9,7 +9,7 @@
 #PyWavelets
 
 
-ml-trainer-sdk==0.2.4
+ml-trainer-sdk==0.2.4.1
 python-dotenv
 aipmodel==0.2.35
 boto3
