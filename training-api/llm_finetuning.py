@@ -146,14 +146,14 @@ model_reg = config["model_name"]
 # --------------     to load model -----------------
 if config["trainer_config"]["load_model"] is not None: 
     model_id = manager.get_model_id_by_name(model_reg)
-    print(manager.ceph.is_folder("models/eba075dfabed4f7fbecbfeb7e54871ca/"))
-    key = "models/eba075dfabed4f7fbecbfeb7e54871ca/"
-    contents = manager.ceph.check_if_exists(key)
-    result = bool(contents) and any(obj["Key"] != key for obj in contents)
-    print("CONTENTS:", contents)
-    print("RESULTS:", result)
-    print("s3 client information:", manager.CEPH_ENDPOINT_URL, manager.CEPH_USER_BUCKET, manager.CEPH_ADMIN_ACCESS_KEY, manager.CEPH_ADMIN_SECRET_KEY)
-    os.makedirs("loaded_model", exist_ok=True)
+    # print(manager.ceph.is_folder("models/eba075dfabed4f7fbecbfeb7e54871ca/"))
+    # key = "models/eba075dfabed4f7fbecbfeb7e54871ca/"
+    # contents = manager.ceph.check_if_exists(key)
+    # result = bool(contents) and any(obj["Key"] != key for obj in contents)
+    # print("CONTENTS:", contents)
+    # print("RESULTS:", result)
+    # print("s3 client information:", manager.CEPH_ENDPOINT_URL, manager.CEPH_USER_BUCKET, manager.CEPH_ADMIN_ACCESS_KEY, manager.CEPH_ADMIN_SECRET_KEY)
+    # os.makedirs("loaded_model", exist_ok=True)
 
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
@@ -173,7 +173,7 @@ if config["trainer_config"]["load_model"] is not None:
 
     if subfolders:
         checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
-        config["model_name"] = f'./{model_id}/{checkpoint_folder}'
+        config["model_name"] = f'./{model_id}/{checkpoint_folder}/'
         print(f"Checkpoint folder found: {checkpoint_folder}")
         print(f"Model path set to: {config['model_name']}")
     else:
