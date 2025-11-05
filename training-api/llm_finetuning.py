@@ -175,6 +175,7 @@ if config["trainer_config"]["load_model"] is not None:
         checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
         config["model_name"] = f'./{model_id}/{checkpoint_folder}'
         print(f"Checkpoint folder found: {checkpoint_folder}")
+        print(f"Model path set to: {config['model_name']}")
     else:
         config["model_name"] = f'./{model_id}/'
         print(f"Model path set to: {config['model_name']}")
