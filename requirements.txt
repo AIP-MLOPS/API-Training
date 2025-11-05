@@ -1,19 +1,21 @@
 #--extra-index-url https://pypi.org/simple/
 #--trusted-host pypi.org
 
-ml-trainer-sdk==0.2.3
 #timm
 #albumentations
 #patool
 #reformer-pytorch
 #sktime
 #PyWavelets
-python-dotenv
-aipmodel==0.2.35
-boto3
-huggingface-hub>=0.34.0,<1.0
-clearml
+
+
+# ml-trainer-sdk==0.2.3
+# python-dotenv
+# aipmodel==0.2.35
+# boto3
+# huggingface-hub>=0.34.0,<1.0
+# clearml
+# triton==3.2.0
 ryn-data==0.1.2
-triton==3.2.0
 # opencv-python-headless==4.12.0.88
 # opencv-python==4.12.0.88
