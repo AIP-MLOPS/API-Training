@@ -190,6 +190,7 @@ if config["trainer_config"]["load_model"] is not None:
 s3_download(
     clearml_access_key=data_model_reg_cfg['clearml_access_key'],
     clearml_secret_key=data_model_reg_cfg['clearml_secret_key'],
+    clearml_host=data_model_reg_cfg['clearml_url'],
     s3_access_key=data_model_reg_cfg['CEPH_ACCESS_KEY'],
     s3_secret_key=data_model_reg_cfg['CEPH_SECRET_KEY'],
     s3_endpoint_url=data_model_reg_cfg['CEPH_ENDPOINT'],
