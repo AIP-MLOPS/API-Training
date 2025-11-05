@@ -8,7 +8,7 @@ ml-trainer-sdk==0.2.3
 #reformer-pytorch
 #sktime
 #PyWavelets
-# python-dotenv
+python-dotenv
 aipmodel==0.2.35
 boto3
 huggingface-hub>=0.34.0,<1.0
