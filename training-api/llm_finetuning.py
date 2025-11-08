@@ -206,6 +206,35 @@ if config["trainer_config"]["load_model"] is not None:
 
     # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
 
+# if config['trainer_config']["resume_from_checkpoint"] is not None:
+
+#     task_id = config['trainer_config']["resume_from_checkpoint"]
+
+#     checkpoint_name = f"checkpoint-{task_id}"
+#     print(f"Resuming from task ID: {task_id}")
+
+#     model_id = manager.get_model_id_by_name(checkpoint_name)
+#     manager.get_model(
+#         model_name= checkpoint_name,  # or any valid model ID
+#         local_dest="."
+#     )
+
+#     subfolder = [f for f in os.listdir(model_id) if os.path.isdir(os.path.join(model_id, f))]
+    
+#     if not subfolders:
+#         print(f"No checkpoint folders found in {model_id}")
+
+#     # You can choose the first one or specify logic (e.g., latest modified)
+
+#     if subfolders:
+#         checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
+#         config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/{checkpoint_folder}/'
+#         print(f"Checkpoint folder found: {checkpoint_folder}")
+#         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
+#     else:
+#         config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/'
+#         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
+
 if config['trainer_config']["resume_from_checkpoint"] is not None:
 
     task_id = config['trainer_config']["resume_from_checkpoint"]
@@ -215,26 +244,27 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
 
     model_id = manager.get_model_id_by_name(checkpoint_name)
     manager.get_model(
-        model_name= checkpoint_name,  # or any valid model ID
+        model_name=checkpoint_name,  # or any valid model ID
         local_dest="."
     )
 
-    subfolder = [f for f in os.listdir(model_id) if os.path.isdir(os.path.join(model_id, f))]
-    
-    if not subfolders:
+    checkpoint_dirs = [f for f in os.listdir(model_id) if os.path.isdir(os.path.join(model_id, f))]
+
+    if not checkpoint_dirs:
         print(f"No checkpoint folders found in {model_id}")
+        config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/'
+        print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
+    else:
+        # Option 1: take the first found folder
+        # checkpoint_folder = checkpoint_dirs[0]
 
-    # You can choose the first one or specify logic (e.g., latest modified)
+        # Option 2: or take the latest alphabetically (often newest)
+        checkpoint_folder = sorted(checkpoint_dirs)[-1]
 
-    if subfolders:
-        checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
         config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/{checkpoint_folder}/'
         print(f"Checkpoint folder found: {checkpoint_folder}")
         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
-    else:
-        config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/'
-        print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
-
+        
 
 s3_download(
     clearml_access_key=data_model_reg_cfg['clearml_access_key'],
