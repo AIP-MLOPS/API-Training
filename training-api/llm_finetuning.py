@@ -185,7 +185,19 @@ if config["trainer_config"]["load_model"] is not None:
     # config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
 
     # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
-    
+
+if config["resume_from_checkpoint"] is not None:
+
+    task_id = None
+    task.connect(task_id, name='resume_task_id')
+    print(f"Resuming from task ID: {task_id}")
+
+    model_id = manager.get_model_id_by_name(task_id)
+    manager.get_model(
+        model_name= model_reg,  # or any valid model ID
+        local_dest="."
+    )
+    config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/'
 
 
 s3_download(
