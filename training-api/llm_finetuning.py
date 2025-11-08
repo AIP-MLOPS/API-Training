@@ -208,8 +208,7 @@ if config["trainer_config"]["load_model"] is not None:
 
 if config['trainer_config']["resume_from_checkpoint"] is not None:
 
-    task_id = None
-    task.connect(task_id, name='resume_task_id')
+    task_id = config['trainer_config']["resume_from_checkpoint"]
 
     checkpoint_name = f"checkpoint-{task_id}"
     print(f"Resuming from task ID: {task_id}")
