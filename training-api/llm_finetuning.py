@@ -215,7 +215,7 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
 
     model_id = manager.get_model_id_by_name(checkpoint_name)
     manager.get_model(
-        model_name= model_reg,  # or any valid model ID
+        model_name= checkpoint_name,  # or any valid model ID
         local_dest="."
     )
 
