@@ -60,6 +60,8 @@ data_model_reg_cfg= {
 
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
+print("Current ClearML Task ID:", task.id)
+
 os.environ['CEPH_ENDPOINT_URL'] = data_model_reg_cfg['CEPH_ENDPOINT']
 os.environ['S3_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
 os.environ['S3_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
@@ -90,7 +92,7 @@ class PrintSaveDirCallback(TrainerCallback):
 
         model_id =  manager.add_model(
             source_type="local",
-            source_path="model/",
+            source_path=args.output_dir,
             model_name = model_reg + "_" + str(int(time.time())),
         )
         print (f"[Callback] Model uploaded to registry with ID: {model_id}\n")
@@ -190,9 +192,11 @@ if config["resume_from_checkpoint"] is not None:
 
     task_id = None
     task.connect(task_id, name='resume_task_id')
+
+    checkpoint_name = f"checkpoint-{task_id}"
     print(f"Resuming from task ID: {task_id}")
 
-    model_id = manager.get_model_id_by_name(task_id)
+    model_id = manager.get_model_id_by_name(checkpoint_name)
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
         local_dest="."
