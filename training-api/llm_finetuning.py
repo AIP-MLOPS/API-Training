@@ -219,10 +219,10 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
         local_dest="."
     )
 
-    subfolder = [f for f in os.listdir(model_dir) if os.path.isdir(os.path.join(model_dir, f))]
+    subfolder = [f for f in os.listdir(model_id) if os.path.isdir(os.path.join(model_id, f))]
     
     if not subfolders:
-        print(f"No checkpoint folders found in {model_dir}")
+        print(f"No checkpoint folders found in {model_id}")
 
     # You can choose the first one or specify logic (e.g., latest modified)
 
