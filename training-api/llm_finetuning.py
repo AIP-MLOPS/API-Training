@@ -81,21 +81,39 @@ class PrintSaveDirCallback(TrainerCallback):
         import os
         print(f"\n[Callback] Model saved to: {args.output_dir}")
         print("[Callback] Files inside:")
+
         for f in os.listdir(args.output_dir):
             print("  -", f)
 
-        models =  manager.list_models()
+        model_name = f"checkpoint-{task.id}"
+        try:
+            model_id = manager.get_model_id_by_name(model_name)
+            if model_id:
+                print(f"[Callback] Model with name '{model_name}' already exists in registry with ID: {model_id}")
+                manager.delete_model(model_id=model_id)
+                print(f"[Callback] Deleted existing model with ID: {model_id}")
+            
+        except Exception as e:
+            print(f"[Callback] Error fetching model ID for {model_name}: {e}")
+            print("[Callback] Proceeding to add the model as new.")
 
-        if model_id in [m['id'] for m in models]: 
-            print(f"Model with ID {model_id} already exists. Deleting the old model before adding the new one.")
-            manager.delete_model(model_id=local_model_id)
+        # models_list =  manager.list_models()
 
-        model_id =  manager.add_model(
-            source_type="local",
-            source_path=args.output_dir,
-            model_name = model_reg + "_" + str(int(time.time())),
-        )
-        print (f"[Callback] Model uploaded to registry with ID: {model_id}\n")
+        # print(f"Models in registry: {models_list}")
+
+        # if model_id in [m['id'] for m in models_list]: 
+        #     print(f"Model with ID {model_id} already exists. Deleting the old model before adding the new one.")
+        #     manager.delete_model(model_id=local_model_id)
+
+        try:
+            model_id = manager.add_model(
+                source_type="local",
+                source_path=args.output_dir,
+                model_name=model_name,
+            )
+            print(f"[Callback] Model uploaded to registry with ID: {model_id}\n")
+        except Exception as e:
+            print(f"[Callback] Failed to upload model '{model_name}': {e}")
         
 
 
@@ -133,7 +151,7 @@ config = {
         "save_total_limit": 1,
         "output_dir": "./model",
         "resume_from_checkpoint": None,
-        "callbacks": None,
+        "callbacks": [PrintSaveDirCallback()],
 
         "load_model": True,  # set to True to load model from model registry
         "save_model": None,  # set to True to save model to model registry
@@ -188,7 +206,7 @@ if config["trainer_config"]["load_model"] is not None:
 
     # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
 
-if config["resume_from_checkpoint"] is not None:
+if config['trainer_config']["resume_from_checkpoint"] is not None:
 
     task_id = None
     task.connect(task_id, name='resume_task_id')
