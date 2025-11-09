@@ -166,22 +166,11 @@ model_reg = config["model_name"]
 # --------------     to load model -----------------
 if config["trainer_config"]["load_model"] is not None: 
     model_id = manager.get_model_id_by_name(model_reg)
-    # print(manager.ceph.is_folder("models/eba075dfabed4f7fbecbfeb7e54871ca/"))
-    # key = "models/eba075dfabed4f7fbecbfeb7e54871ca/"
-    # contents = manager.ceph.check_if_exists(key)
-    # result = bool(contents) and any(obj["Key"] != key for obj in contents)
-    # print("CONTENTS:", contents)
-    # print("RESULTS:", result)
-    # print("s3 client information:", manager.CEPH_ENDPOINT_URL, manager.CEPH_USER_BUCKET, manager.CEPH_ADMIN_ACCESS_KEY, manager.CEPH_ADMIN_SECRET_KEY)
-    # os.makedirs("loaded_model", exist_ok=True)
-
     manager.get_model(
         model_name= model_reg,  # or any valid model ID
         local_dest="."
     )
-    # model_dir = f'./loaded_model/{model_id}/'
     model_dir = f'./{model_id}/'
-    # model_dir = "loaded_model/model_files/"
 
     # Find the first folder inside model_dir
     subfolders = [f for f in os.listdir(model_dir) if os.path.isdir(os.path.join(model_dir, f))]
@@ -200,40 +189,6 @@ if config["trainer_config"]["load_model"] is not None:
         config["model_name"] = f'./{model_id}/'
         print(f"Model path set to: {config['model_name']}")
 
-    # Set the config
-    # config["model_name"] = f'./{model_id}/{checkpoint_folder}'
-    # config["model_name"] = f'loaded_model/{model_id}/{checkpoint_folder}'
-
-    # config["model_name"] = f'loaded_model/{model_id}/checkpoint-1'  
-
-# if config['trainer_config']["resume_from_checkpoint"] is not None:
-
-#     task_id = config['trainer_config']["resume_from_checkpoint"]
-
-#     checkpoint_name = f"checkpoint-{task_id}"
-#     print(f"Resuming from task ID: {task_id}")
-
-#     model_id = manager.get_model_id_by_name(checkpoint_name)
-#     manager.get_model(
-#         model_name= checkpoint_name,  # or any valid model ID
-#         local_dest="."
-#     )
-
-#     subfolder = [f for f in os.listdir(model_id) if os.path.isdir(os.path.join(model_id, f))]
-    
-#     if not subfolders:
-#         print(f"No checkpoint folders found in {model_id}")
-
-#     # You can choose the first one or specify logic (e.g., latest modified)
-
-#     if subfolders:
-#         checkpoint_folder = subfolders[0]  # or sorted(subfolders)[-1] for the last alphabetically
-#         config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/{checkpoint_folder}/'
-#         print(f"Checkpoint folder found: {checkpoint_folder}")
-#         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
-#     else:
-#         config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/'
-#         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
 
 if config['trainer_config']["resume_from_checkpoint"] is not None:
 
@@ -293,8 +248,6 @@ for file_path in files:
 # Connect hyperparameters and other configurations to the ClearML task
 
 
-# config["dataset_config"]["source"] = "/home/dario/mlops/datasets/medical_qa/"
-# config["dataset_config"]["source"] = '/home/dario/mlops/datasets/sample_instruction.json'
 
 config["dataset_config"]["source"] = file_path
 
