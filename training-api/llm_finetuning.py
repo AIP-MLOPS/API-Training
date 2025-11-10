@@ -25,25 +25,13 @@ torch._dynamo.config.disable = True
 task = Task.init(
     project_name="API training",  # Name of the ClearML project
     task_name=f"API Training",  # Name of the task
-    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+    # task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
     reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
 )
 ## ====================== Data Registry =========================
 load_dotenv()
 
-data_model_reg_cfg= {
-    #ceph related
-    'CEPH_ENDPOINT': 'http://144.172.105.98:7000',
-    'CEPH_ACCESS_KEY': '3386LN5KA2OFQXPTYM9S',
-    'CEPH_SECRET_KEY': 'AALvi6KexAeSNCsOMRqDHTRf10BQzNyy5BQnGIfO',
-    'CEPH_BUCKET': 'datauserv2-bucket-bucket',
 
-    #clearml
-    'clearml_url': 'http://144.172.105.98:30003',
-    'clearml_access_key': '8113C94C6A387E90477E58B89CCE0547',
-    'clearml_secret_key': 'C60E7BD316A59D867D083BABD50B161EF2BFB8BDAADD59935978E546009F923E',
-    'clearml_username': 'datauserv2',
-}
 data_model_reg_cfg= {
     #ceph related
     'CEPH_ENDPOINT': 'default',

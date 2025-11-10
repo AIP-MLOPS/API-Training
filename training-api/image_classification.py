@@ -13,7 +13,7 @@ from data.sdk.download_sdk import s3_download
 
 # --------- ClearML task initialization --------
 task = Task.init(
-    project_name="API training",  # Name of the ClearML project
+    project_name="Local API training",  # Name of the ClearML project
     task_name=f"API Training",  # Name of the task
     task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
     reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
@@ -35,13 +35,28 @@ data_model_reg_cfg= {
     'clearml_username': 'default',
 }
 
+data_model_reg_cfg= {
+    # Ceph 
+    'CEPH_ENDPOINT': 'http://144.172.105.98:7000',
+    'CEPH_ACCESS_KEY': '3386LN5KA2OFQXPTYM9S',
+    'CEPH_SECRET_KEY': 'AALvi6KexAeSNCsOMRqDHTRf10BQzNyy5BQnGIfO',
+    'CEPH_BUCKET': 'mlopsadminv2-bucket',
+
+    # ClearML
+    'clearml_url': 'http://144.172.105.98:30003',
+    'clearml_access_key': '65592A380E9EB6F013881A57E0FE6389',
+    'clearml_secret_key': '1FE51DAD67FB066710CF935911A84058FE9279B1122E0CC4719C505B932DAE81',
+    'clearml_username': 'datauserv2',
+}
+
+
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print(data_model_reg_cfg)
-os.environ['CEPH_ENDPOINT'] = data_model_reg_cfg['CEPH_ENDPOINT']
-os.environ['CEPH_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
-os.environ['CEPH_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
-os.environ['CEPH_BUCKET'] = data_model_reg_cfg['CEPH_BUCKET']
+os.environ['CEPH_ENDPOINT_URL'] = data_model_reg_cfg['CEPH_ENDPOINT']
+os.environ['S3_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
+os.environ['S3_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
+os.environ['S3_BUCKET_NAME'] = data_model_reg_cfg['CEPH_BUCKET']
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
@@ -66,12 +81,12 @@ config = {
         "model_name": "model registry",
 
         "dataset_config": {
-            "source": "path/to/dataset",
+            "source": "microsoft-cats_vs_dogs",  # !Required
             "split_ratio": 0.2,
             "batch_size": 32,
         },
         "model_config": {
-            "num_classes": 10,  # !Required
+            "num_classes": 2,  # !Required
             "input_channels": 3,
             "input_size": (32, 32),
             "type": "timm",            # "timm" for pretrained models, or omit for custom CNN
@@ -81,7 +96,8 @@ config = {
         "trainer_config": {
             "lr": 1e-2,
             "load_model": None,
-            "save_model": None,
+            # "save_model": None,
+            "save_model": True,
             "epochs": 20,
             "device": "cuda",
             "checkpoint_path": None,
