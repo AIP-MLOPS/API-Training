@@ -147,7 +147,7 @@ if config["trainer_config"]["save_model"] is not None:
 
 # --------------     to load model -----------------
 
-if config["trainer_config"]["load_model"] is not None and config["trainer_config"]["load_model"] is not False: 
+if config["trainer_config"]["load_model"] is not None and config["trainer_config"]["load_model"] != "False": 
     model_id = manager.get_model_id_by_name(model_reg)
 
     manager.get_model(
