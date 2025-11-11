@@ -126,7 +126,7 @@ config = {
             
             "checkpoint_path": "./checkpoint/checkpoint", 
             "callbacks": [ModelRegistryCheckpoint()],
-            "resume_from_checkpoint": '5e39443b7b6947609fd393cb6e32014c',
+            "resume_from_checkpoint": None,
         },
     }
 
