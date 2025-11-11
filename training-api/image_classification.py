@@ -95,22 +95,22 @@ config = {
         "model_name": "model registry",
 
         "dataset_config": {
-            "source": "microsoft-cats_vs_dogs",  # !Required
+            "source": "datasetname",  # !Required
             "batch_size": 32,                    # !Required
-            "split_ratio": None,                 # *
+            "split_ratio": None,                 # !Required
             "transform_config": {
                 "resize": (32, 32),
-                "horizontal_flip": True,
-                "normalization": {
-                    "mean": [0.4914, 0.4822, 0.4465],
-                    "std": [0.2023, 0.1994, 0.2010],
-                },
+                # "horizontal_flip": True,
+                # "normalization": {
+                #     "mean": [0.4914, 0.4822, 0.4465],
+                #     "std": [0.2023, 0.1994, 0.2010],
+                # },
             },
         },
         "model_config": {
             "num_classes": 2,          # !Required
             "input_channels": 3,       # !Required
-            "input_size": (32, 32),  # !Required
+            "input_size": (32, 32),  
             "type": "timm",            
             "name": "resnet18",        # !Required
             "pretrained": True,        
@@ -147,7 +147,7 @@ if config["trainer_config"]["save_model"] is not None:
 
 # --------------     to load model -----------------
 
-if config["trainer_config"]["load_model"] is not None: 
+if config["trainer_config"]["load_model"] is not None and config["trainer_config"]["load_model"] is not False: 
     model_id = manager.get_model_id_by_name(model_reg)
 
     manager.get_model(
