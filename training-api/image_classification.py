@@ -111,16 +111,17 @@ config = {
             "num_classes": 2,          # !Required
             "input_channels": 3,       # !Required
             "input_size": (32, 32),  # !Required
-            "type": "timm",            # !Required
+            "type": "timm",            
             "name": "resnet18",        # !Required
-            "pretrained": True,        # !Required
+            "pretrained": True,        
             },
         
         "trainer_config": {
             "lr": 1e-2,                # *
             "load_model": None,        # *
-            "save_model": True,        # *
+            "save_model": None,        # *
             "epochs": 10,              # *
+
             "device": None,      
             
             "checkpoint_path": "./checkpoint/checkpoint", 
@@ -132,7 +133,7 @@ config = {
 # the input size and the resize should match
 if config["model_config"]['input_size'] != config["dataset_config"]['transform_config']['resize']:
     print("[warning] Input size and resize dimensions must match.")
-    config["dataset_config"]['transform_config']['resize'] = config["model_config"]['input_size']
+    config["model_config"]['input_size'] = config["dataset_config"]['transform_config']['resize']
     print(f"Resizing images to: {config['dataset_config']['transform_config']['resize']}")
 
 task.connect(config)
