@@ -1,7 +1,6 @@
 
 import os
 from dotenv import load_dotenv
-import requests
 import time
 from pathlib import Path
 
@@ -15,7 +14,7 @@ from data.sdk.download_sdk import s3_download
 task = Task.init(
     project_name="Local API training",  # Name of the ClearML project
     task_name=f"API Training",  # Name of the task
-    task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+    # task_type=Task.TaskTypes‍‍.optimizer,  # Type of the task (could also be "training", "testing", etc.)
     reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
 )
 
@@ -33,30 +32,21 @@ data_model_reg_cfg= {
     'clearml_access_key': 'default',
     'clearml_secret_key': 'default',
     'clearml_username': 'default',
-}
-
-data_model_reg_cfg= {
-    # Ceph 
-    'CEPH_ENDPOINT': 'http://144.172.105.98:7000',
-    'CEPH_ACCESS_KEY': '3386LN5KA2OFQXPTYM9S',
-    'CEPH_SECRET_KEY': 'AALvi6KexAeSNCsOMRqDHTRf10BQzNyy5BQnGIfO',
-    'CEPH_BUCKET': 'mlopsadminv2-bucket',
-
-    # ClearML
-    'clearml_url': 'http://144.172.105.98:30003',
-    'clearml_access_key': '65592A380E9EB6F013881A57E0FE6389',
-    'clearml_secret_key': '1FE51DAD67FB066710CF935911A84058FE9279B1122E0CC4719C505B932DAE81',
-    'clearml_username': 'datauserv2',
+    'dataset_version': 'latest',
 }
 
 
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print(data_model_reg_cfg)
+
+print("Current ClearML Task ID:", task.id)
+
 os.environ['CEPH_ENDPOINT_URL'] = data_model_reg_cfg['CEPH_ENDPOINT']
 os.environ['S3_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
 os.environ['S3_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
 os.environ['S3_BUCKET_NAME'] = data_model_reg_cfg['CEPH_BUCKET']
+
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
@@ -67,13 +57,37 @@ manager = MLOpsManager(
 )
 
 
-class PrintSaveDirCallback():
-    def on_save(self):
+class ModelRegistryCheckpoint():
+    def on_save(self, path):
+        path = 'checkpoint'
         import os
-        print(f"\n[Callback] Model saved to: {self.output_dir}")
+        print(f"\n[Callback] Model saved to: {path}")
         print("[Callback] Files inside:")
-        for f in os.listdir(self.output_dir):
-            print("  -", f)
+
+        # for f in os.listdir(path):
+        #     print("  -", f)
+
+        model_name = f"checkpoint-{task.id}"
+        try:
+            model_id = manager.get_model_id_by_name(model_name)
+            if model_id:
+                print(f"[Callback] Model with name '{model_name}' already exists in registry with ID: {model_id}")
+                manager.delete_model(model_id=model_id)
+                print(f"[Callback] Deleted existing model with ID: {model_id}")
+            
+        except Exception as e:
+            print(f"[Callback] Error fetching model ID for {model_name}: {e}")
+            print("[Callback] Proceeding to add the model as new.")
+
+        try:
+            model_id = manager.add_model(
+                source_type="local",
+                source_path=path,
+                model_name=model_name,
+            )
+            print(f"[Callback] Model uploaded to registry with ID: {model_id}\n")
+        except Exception as e:
+            print(f"[Callback] Failed to upload model '{model_name}': {e}")
 
 #----------------- main config ----------------
 config = {
@@ -82,29 +96,44 @@ config = {
 
         "dataset_config": {
             "source": "microsoft-cats_vs_dogs",  # !Required
-            "split_ratio": 0.2,
-            "batch_size": 32,
+            "batch_size": 32,                    # !Required
+            "split_ratio": None,                 # *
+            "transform_config": {
+                "resize": (32, 32),
+                "horizontal_flip": True,
+                "normalization": {
+                    "mean": [0.4914, 0.4822, 0.4465],
+                    "std": [0.2023, 0.1994, 0.2010],
+                },
+            },
         },
         "model_config": {
-            "num_classes": 2,  # !Required
-            "input_channels": 3,
-            "input_size": (32, 32),
-            "type": "timm",            # "timm" for pretrained models, or omit for custom CNN
-            "name": "resnet18",        # any supported TIMM model
-            "pretrained": True
-        },
+            "num_classes": 2,          # !Required
+            "input_channels": 3,       # !Required
+            "input_size": (32, 32),  # !Required
+            "type": "timm",            # !Required
+            "name": "resnet18",        # !Required
+            "pretrained": True,        # !Required
+            },
+        
         "trainer_config": {
-            "lr": 1e-2,
-            "load_model": None,
-            # "save_model": None,
-            "save_model": True,
-            "epochs": 20,
-            "device": "cuda",
-            "checkpoint_path": None,
-            "callbacks": None,
-            "resume_from_checkpoint": None,
+            "lr": 1e-2,                # *
+            "load_model": None,        # *
+            "save_model": True,        # *
+            "epochs": 10,              # *
+            "device": None,      
+            
+            "checkpoint_path": "./checkpoint/checkpoint", 
+            "callbacks": [ModelRegistryCheckpoint()],
+            "resume_from_checkpoint": '5e39443b7b6947609fd393cb6e32014c',
         },
     }
+
+# the input size and the resize should match
+if config["model_config"]['input_size'] != config["dataset_config"]['transform_config']['resize']:
+    print("[warning] Input size and resize dimensions must match.")
+    config["dataset_config"]['transform_config']['resize'] = config["model_config"]['input_size']
+    print(f"Resizing images to: {config['dataset_config']['transform_config']['resize']}")
 
 task.connect(config)
 
@@ -127,6 +156,21 @@ if config["trainer_config"]["load_model"] is not None:
     # !!! ask from the data team to load from the right path
     config["trainer_config"]["load_model"] = f"./{model_id}/"
 
+if config['trainer_config']["resume_from_checkpoint"] is not None:
+
+    task_id = config['trainer_config']["resume_from_checkpoint"]
+
+    checkpoint_name = f"checkpoint-{task_id}"
+    print(f"Resuming from task ID: {task_id}")
+
+    model_id = manager.get_model_id_by_name(checkpoint_name)
+    manager.get_model(
+        model_name=checkpoint_name,  # or any valid model ID
+        local_dest="."
+    )
+
+    config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/checkpoint'
+        
 
 s3_download(
     clearml_access_key=data_model_reg_cfg['clearml_access_key'],
@@ -137,30 +181,13 @@ s3_download(
     s3_endpoint_url=data_model_reg_cfg['CEPH_ENDPOINT'],
     dataset_name=config["dataset_config"]["source"],
     absolute_path=Path(__file__).parent/"dataset",
-    user_name=data_model_reg_cfg['clearml_username']
+    user_name=data_model_reg_cfg['clearml_username'],
+    version=data_model_reg_cfg['dataset_version'],
 )
 
-# absolute_path = Path(__file__).parent / "dataset" / cfg["dataset_config"]["source"]
+absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"] / "images"
 
-# files = list(absolute_path.rglob("*.[jc][so][nv]*"))  # matches .json or .csv
-
-# # TODO the .json and .csv is not going to work needs refinement
-# # Or, more explicitly: 
-# files = [f for f in absolute_path.rglob("*") if f.suffix in [".json", ".csv"]]
-
-# # Print absolute paths
-# for file_path in files:
-#     print(file_path.resolve())
-#     file_path = file_path.resolve()
-
-# # Connect hyperparameters and other configurations to the ClearML task
-
-
-# # config["dataset_config"]["source"] = "/home/dario/mlops/datasets/medical_qa/"
-# # config["dataset_config"]["source"] = '/home/dario/mlops/datasets/sample_instruction.json'
-
-# cfg["dataset_config"]["source"] = file_path
-
+config["dataset_config"]["source"] = str(absolute_path.resolve())
 
 trainer = AutoTrainer(config=config)
 
@@ -171,5 +198,4 @@ if config["trainer_config"]["save_model"] is not None:
         source_type="local",
         source_path="model/",
         model_name = model_reg + "_" + str(int(time.time())),
-        code_path="." , # ← Replace with the path to your model.py if you have it
     )

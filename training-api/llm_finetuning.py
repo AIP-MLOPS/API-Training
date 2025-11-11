@@ -130,12 +130,13 @@ config = {
         # "epochs": 1, # *
         "epochs": 1, # *
         "learning_rate": 1e-4, # *
+        
+        "save_steps": 0.5,
+        "save_strategy": "epoch",
 
         
 
         "optim": "adamw_8bit",
-        "save_strategy": "epoch",
-        "save_steps": 0.5,
         "save_total_limit": 1,
         "output_dir": "./model",
         "resume_from_checkpoint": None,
