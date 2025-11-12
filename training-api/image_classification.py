@@ -138,7 +138,7 @@ if config["model_config"]['input_size'] != config["dataset_config"]['transform_c
 
 task.connect(config)
 
-if config["trainer_config"]['load_model'] == "false":
+if config["trainer_config"]['load_model'] == "False" or config["trainer_config"]['load_model'] == "false" or config["trainer_config"]['load_model'] == "":
     config["trainer_config"]['load_model'] = None 
 print(config)
 
