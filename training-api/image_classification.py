@@ -138,6 +138,8 @@ if config["model_config"]['input_size'] != config["dataset_config"]['transform_c
 
 task.connect(config)
 
+if config["trainer_config"]['load_model'] == "false":
+    config["trainer_config"]['load_model'] = None 
 print(config)
 
 model_reg = config["model_name"]
@@ -147,7 +149,7 @@ if config["trainer_config"]["save_model"] is not None:
 
 # --------------     to load model -----------------
 
-if config["trainer_config"]["load_model"] is not None and config["trainer_config"]["load_model"] != "False": 
+if config["trainer_config"]["load_model"] is not None : 
     model_id = manager.get_model_id_by_name(model_reg)
 
     manager.get_model(
