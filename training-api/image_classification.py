@@ -140,6 +140,7 @@ task.connect(config)
 
 if config["trainer_config"]['load_model'] == "False" or config["trainer_config"]['load_model'] == "false" or config["trainer_config"]['load_model'] == "":
     config["trainer_config"]['load_model'] = None 
+    
 print(config)
 
 model_reg = config["model_name"]

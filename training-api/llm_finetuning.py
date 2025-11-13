@@ -33,35 +33,20 @@ load_dotenv()
 
 
 data_model_reg_cfg= {
-    #ceph related
-    'CEPH_ENDPOINT': 'default',
-    'CEPH_ACCESS_KEY': 'default',
-    'CEPH_SECRET_KEY': 'default',
-    'CEPH_BUCKET': 'default',
-
-    #clearml
-    'clearml_url': 'default',
-    'clearml_access_key': 'default',
-    'clearml_secret_key': 'default',
     'clearml_username': 'default',
+    'token': 'default'
 }
 
 task.connect(data_model_reg_cfg, name='model_data_cfg')
 
 print("Current ClearML Task ID:", task.id)
 
-os.environ['CEPH_ENDPOINT_URL'] = data_model_reg_cfg['CEPH_ENDPOINT']
-os.environ['S3_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
-os.environ['S3_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
-os.environ['S3_BUCKET_NAME'] = data_model_reg_cfg['CEPH_BUCKET']
 
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    CLEARML_API_SERVER_URL=data_model_reg_cfg['clearml_url'],
-    CLEARML_ACCESS_KEY=data_model_reg_cfg['clearml_access_key'],
-    CLEARML_SECRET_KEY=data_model_reg_cfg['clearml_secret_key'],
-    CLEARML_USERNAME=data_model_reg_cfg['clearml_username']
+    user_name=data_model_reg_cfg['clearml_username'],
+    user_token=data_model_reg_cfg['token'],
 )
 
 class PrintSaveDirCallback(TrainerCallback):
@@ -85,13 +70,6 @@ class PrintSaveDirCallback(TrainerCallback):
             print(f"[Callback] Error fetching model ID for {model_name}: {e}")
             print("[Callback] Proceeding to add the model as new.")
 
-        # models_list =  manager.list_models()
-
-        # print(f"Models in registry: {models_list}")
-
-        # if model_id in [m['id'] for m in models_list]: 
-        #     print(f"Model with ID {model_id} already exists. Deleting the old model before adding the new one.")
-        #     manager.delete_model(model_id=local_model_id)
 
         try:
             model_id = manager.add_model(
@@ -211,16 +189,11 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
         
 
 s3_download(
-    clearml_access_key=data_model_reg_cfg['clearml_access_key'],
-    clearml_secret_key=data_model_reg_cfg['clearml_secret_key'],
-    clearml_host=data_model_reg_cfg['clearml_url'],
-    s3_access_key=data_model_reg_cfg['CEPH_ACCESS_KEY'],
-    s3_secret_key=data_model_reg_cfg['CEPH_SECRET_KEY'],
-    s3_endpoint_url=data_model_reg_cfg['CEPH_ENDPOINT'],
-    dataset_name=config["dataset_config"]["source"],
-    absolute_path=Path(__file__).parent/"dataset",
-    user_name=data_model_reg_cfg['clearml_username']
-)
+        dataset_name=config["dataset_config"]["source"],
+        absolute_path=Path(__file__).parent/"dataset",
+        user_name=data_model_reg_cfg['clearml_username'],
+        token=data_model_reg_cfg['token']
+    )
 
 absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"]
 
