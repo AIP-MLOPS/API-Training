@@ -31,6 +31,9 @@ task = Task.init(
 ## ====================== Data Registry =========================
 load_dotenv()
 
+user_management_api = os.getenv("USER_MANAGEMENT_API")
+clearml_api_host = os.getenv("CLEARML_API_HOST")
+s3_endpoint_url = os.getenv("CEPH_ENDPOINT_URL")
 
 data_model_reg_cfg= {
     'clearml_username': 'default',
@@ -45,7 +48,7 @@ print("Current ClearML Task ID:", task.id)
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    user_name=data_model_reg_cfg['clearml_username'],
+    # user_name=data_model_reg_cfg['clearml_username'],
     user_token=data_model_reg_cfg['token'],
 )
 
@@ -191,8 +194,11 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
 s3_download(
         dataset_name=config["dataset_config"]["source"],
         absolute_path=Path(__file__).parent/"dataset",
-        user_name=data_model_reg_cfg['clearml_username'],
-        token=data_model_reg_cfg['token']
+        token=data_model_reg_cfg['token'],
+        user_management_url=user_management_api,
+        clearml_api_host=clearml_api_host,
+        s3_endpoint_url=s3_endpoint_url,
+        # user_name=data_model_reg_cfg['clearml_username'],
     )
 
 absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"]
