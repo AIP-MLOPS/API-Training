@@ -128,7 +128,7 @@ config = {
         "resume_from_checkpoint": None,
         "callbacks": [PrintSaveDirCallback()],
 
-        "load_model": True,  # set to True to load model from model registry
+        "load_model": None,  # set to True to load model from model registry
         "save_model": None,  # set to True to save model to model registry
     },
 }
