@@ -47,10 +47,11 @@ print("Current ClearML Task ID:", task.id)
 
 
 # --------- fetch model from model registry --------
-manager = MLOpsManager(
-    user_name=data_model_reg_cfg['clearml_username'],
-    user_token=data_model_reg_cfg['token'],
-)
+# manager = MLOpsManager(
+#     user_name=data_model_reg_cfg['clearml_username'],
+#     user_token=data_model_reg_cfg['token'],
+# )
+manager = None
 
 class PrintSaveDirCallback(TrainerCallback):
     def on_save(self, args, state, control, **kwargs):
