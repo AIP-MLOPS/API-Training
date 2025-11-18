@@ -35,6 +35,8 @@ user_management_api = os.getenv("USER_MANAGEMENT_API")
 clearml_api_host = os.getenv("CLEARML_API_HOST")
 s3_endpoint_url = os.getenv("CEPH_ENDPOINT_URL")
 
+print(user_management_api, clearml_api_host, s3_endpoint_url)
+
 data_model_reg_cfg= {
     'clearml_username': 'mlopsuser03',
     'token': 'default'
@@ -50,6 +52,9 @@ print("Current ClearML Task ID:", task.id)
 manager = MLOpsManager(
     # user_name=data_model_reg_cfg['clearml_username'],
     user_token=data_model_reg_cfg['token'],
+    # user_management_url=user_management_api,
+    # clearml_api_host=clearml_api_host,
+    # s3_endpoint_url=s3_endpoint_url,
 )
 
 class PrintSaveDirCallback(TrainerCallback):
