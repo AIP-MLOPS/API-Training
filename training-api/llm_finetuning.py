@@ -36,7 +36,7 @@ clearml_api_host = os.getenv("CLEARML_API_HOST")
 s3_endpoint_url = os.getenv("CEPH_ENDPOINT_URL")
 
 data_model_reg_cfg= {
-    'clearml_username': 'default',
+    'clearml_username': 'mlopsuser03',
     'token': 'default'
 }
 
@@ -48,7 +48,7 @@ print("Current ClearML Task ID:", task.id)
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    # user_name=data_model_reg_cfg['clearml_username'],
+    user_name=data_model_reg_cfg['clearml_username'],
     user_token=data_model_reg_cfg['token'],
 )
 
