@@ -25,18 +25,8 @@ clearml_api_host = os.getenv("CLEARML_API_HOST")
 s3_endpoint_url = os.getenv("CEPH_ENDPOINT_URL")
 
 data_model_reg_cfg= {
-    #ceph related
-    'CEPH_ENDPOINT': 'default',
-    'CEPH_ACCESS_KEY': 'default',
-    'CEPH_SECRET_KEY': 'default',
-    'CEPH_BUCKET': 'default',
-
-    #clearml
-    'clearml_url': 'default',
-    'clearml_access_key': 'default',
-    'clearml_secret_key': 'default',
-    'clearml_username': 'default',
-    'dataset_version': 'latest',
+    'clearml_username': 'mlopsuser03',
+    'token': 'default'
 }
 
 
@@ -45,11 +35,6 @@ task.connect(data_model_reg_cfg, name='model_data_cfg')
 print(data_model_reg_cfg)
 
 print("Current ClearML Task ID:", task.id)
-
-os.environ['CEPH_ENDPOINT_URL'] = data_model_reg_cfg['CEPH_ENDPOINT']
-os.environ['S3_ACCESS_KEY'] = data_model_reg_cfg['CEPH_ACCESS_KEY']
-os.environ['S3_SECRET_KEY'] = data_model_reg_cfg['CEPH_SECRET_KEY']
-os.environ['S3_BUCKET_NAME'] = data_model_reg_cfg['CEPH_BUCKET']
 
 
 # --------- fetch model from model registry --------
