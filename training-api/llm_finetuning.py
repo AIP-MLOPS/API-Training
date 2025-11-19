@@ -137,7 +137,9 @@ task.connect(config)
 print(config)
 
 model_reg = config["model_name"]
-
+if config["trainer_config"]["load_model"] is "False" or config["trainer_config"]["load_model"] is "false" or config["trainer_config"]["load_model"] == "":
+    config["trainer_config"]["load_model"] = None
+    
 # --------------     to load model -----------------
 if config["trainer_config"]["load_model"] is not None: 
     model_id = manager.get_model_id_by_name(model_reg)
