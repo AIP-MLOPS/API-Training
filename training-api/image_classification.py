@@ -177,6 +177,7 @@ s3_download(
         # user_name=data_model_reg_cfg['clearml_username'],
     )
 config["dataset_config"]["source"] = s3_download
+print(type(config["dataset_config"]["source"]))
 
 
 # absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"] / "images"
