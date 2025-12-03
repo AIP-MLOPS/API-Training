@@ -175,9 +175,9 @@ s3_download(
 config["dataset_config"]["source"] = s3_download
 
 
-absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"] / "images"
+# absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"] / "images"
 
-config["dataset_config"]["source"] = str(absolute_path.resolve())
+# config["dataset_config"]["source"] = str(absolute_path.resolve())
 
 trainer = AutoTrainer(config=config)
 
