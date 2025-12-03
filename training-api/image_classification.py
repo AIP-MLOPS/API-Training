@@ -5,11 +5,15 @@ import time
 from pathlib import Path
 
 from clearml import Task
-
+from logger.logger import CL_Logger
 from ml_trainer import AutoTrainer
 from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
-
+class IMG_logger(CL_Logger):
+    def __init__(self, task: Task):
+        super().__init__(task)
+    def on_epoch_start(self):
+        self.scaler("Common Values","Epoch",self.trainer.current_epoch)
 # --------- ClearML task initialization --------
 task = Task.init(
     project_name="Local API training",  # Name of the ClearML project
@@ -108,7 +112,7 @@ config = {
             "load_model": None,        # *
             "save_model": None,        # *
             "epochs": 10,              # *
-
+            "log_callbacks": [IMG_logger],
             "device": None,      
             
             "checkpoint_path": "./checkpoint/checkpoint", 

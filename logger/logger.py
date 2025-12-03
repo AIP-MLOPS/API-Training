@@ -8,7 +8,7 @@ class CL_Logger(LoggerTemplate):
         self.task = Task.init()
         self.logger = self.task.get_logger()
 
-    def scaler(self, title, series, value, iteration=0):
+    def log_scaler(self, title, series, value, iteration=0):
         self.logger.report_scalar(
             title=title,
             series=series,
