@@ -31,9 +31,14 @@ task = Task.init(
 ## ====================== Data Registry =========================
 load_dotenv()
 
+user_management_api = os.getenv("USER_MANAGEMENT_API")
+clearml_api_host = os.getenv("CLEARML_API_HOST")
+s3_endpoint_url = os.getenv("CEPH_ENDPOINT_URL")
+
+print(user_management_api, clearml_api_host, s3_endpoint_url)
 
 data_model_reg_cfg= {
-    'clearml_username': 'default',
+    'clearml_username': 'mlopsuser03',
     'token': 'default'
 }
 
@@ -45,8 +50,11 @@ print("Current ClearML Task ID:", task.id)
 
 # --------- fetch model from model registry --------
 manager = MLOpsManager(
-    user_name=data_model_reg_cfg['clearml_username'],
+    # user_name=data_model_reg_cfg['clearml_username'],
     user_token=data_model_reg_cfg['token'],
+    # user_management_url=user_management_api,
+    # clearml_api_host=clearml_api_host,
+    # s3_endpoint_url=s3_endpoint_url,
 )
 
 class PrintSaveDirCallback(TrainerCallback):
@@ -120,7 +128,7 @@ config = {
         "resume_from_checkpoint": None,
         "callbacks": [PrintSaveDirCallback()],
 
-        "load_model": True,  # set to True to load model from model registry
+        "load_model": None,  # set to True to load model from model registry
         "save_model": None,  # set to True to save model to model registry
     },
 }
@@ -129,7 +137,9 @@ task.connect(config)
 print(config)
 
 model_reg = config["model_name"]
-
+if config["trainer_config"]["load_model"] is "False" or config["trainer_config"]["load_model"] is "false" or config["trainer_config"]["load_model"] == "":
+    config["trainer_config"]["load_model"] = None
+    
 # --------------     to load model -----------------
 if config["trainer_config"]["load_model"] is not None: 
     model_id = manager.get_model_id_by_name(model_reg)
@@ -191,8 +201,11 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
 s3_download(
         dataset_name=config["dataset_config"]["source"],
         absolute_path=Path(__file__).parent/"dataset",
-        user_name=data_model_reg_cfg['clearml_username'],
-        token=data_model_reg_cfg['token']
+        token=data_model_reg_cfg['token'],
+        user_management_url=user_management_api,
+        clearml_api_host=clearml_api_host,
+        s3_endpoint_url=s3_endpoint_url,
+        # user_name=data_model_reg_cfg['clearml_username'],
     )
 
 absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"]
