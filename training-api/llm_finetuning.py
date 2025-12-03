@@ -208,6 +208,8 @@ s3_download(
         # user_name=data_model_reg_cfg['clearml_username'],
     )
 
+config["dataset_config"]["source"] = s3_download
+
 absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"]
 
 files = list(absolute_path.rglob("*.[jc][so][nv]*"))  # matches .json or .csv
