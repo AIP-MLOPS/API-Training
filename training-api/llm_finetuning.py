@@ -205,6 +205,7 @@ dataset_object = s3_download(
         user_management_url=user_management_api,
         clearml_api_host=clearml_api_host,
         s3_endpoint_url=s3_endpoint_url,
+        dataset_type="text_generation",
         # user_name=data_model_reg_cfg['clearml_username'],
     )
 
