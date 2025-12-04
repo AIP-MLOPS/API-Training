@@ -198,7 +198,7 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
         
 
-s3_download(
+dataset_object = s3_download(
         dataset_name=config["dataset_config"]["source"],
         absolute_path=Path(__file__).parent/"dataset",
         token=data_model_reg_cfg['token'],
@@ -208,7 +208,7 @@ s3_download(
         # user_name=data_model_reg_cfg['clearml_username'],
     )
 
-config["dataset_config"]["source"] = s3_download
+config["dataset_config"]["source"] = dataset_object
 print(type(config["dataset_config"]["source"]))
 
 # absolute_path = Path(__file__).parent / "dataset" / config["dataset_config"]["source"]
