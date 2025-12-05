@@ -112,7 +112,7 @@ config = {
             "load_model": None,        # *
             "save_model": None,        # *
             "epochs": 10,              # *
-            "log_callbacks": [IMG_logger],
+            "log_callbacks": [image_logger],
             "device": None,      
             
             "checkpoint_path": "./checkpoint/checkpoint", 
