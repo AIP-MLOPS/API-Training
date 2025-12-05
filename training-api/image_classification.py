@@ -10,10 +10,10 @@ from ml_trainer import AutoTrainer
 from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
 class IMG_logger(CL_Logger):
-    def __init__(self, task: Task):
-        super().__init__(task)
+
     def on_epoch_start(self):
         self.scaler("Common Values","Epoch",self.trainer.current_epoch)
+image_logger = IMG_logger()
 # --------- ClearML task initialization --------
 task = Task.init(
     project_name="Local API training",  # Name of the ClearML project
