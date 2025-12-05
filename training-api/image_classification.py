@@ -100,7 +100,7 @@ config = {
         },
         "model_config": {
             "num_classes": 2,          # !Required
-            "input_channels": 3,       # !Required
+            "input_channels": 1,       # !Required
             "input_size": (32, 32),  
             "type": "timm",            
             "name": "resnet18",        # !Required
