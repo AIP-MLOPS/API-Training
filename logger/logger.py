@@ -4,7 +4,6 @@ from ml_trainer.utils.logger import LoggerTemplate
 # cfg = {'task': None}
 class CL_Logger(LoggerTemplate):
     def __init__(self,name="trainer", log_dir="logs"):
-        super().__init__(name,log_dir)
         self.task = Task.init()
         self.logger = self.task.get_logger()
 
