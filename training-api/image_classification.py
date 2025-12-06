@@ -177,6 +177,7 @@ dataset_object = s3_download(
         dataset_type="image_classification",
         # user_name=data_model_reg_cfg['clearml_username'],
     )
+    
 config["dataset_config"]["source"] = dataset_object
 print(type(config["dataset_config"]["source"]))
 
