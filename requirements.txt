@@ -9,7 +9,7 @@
 #PyWavelets
 
 
-ml-trainer-sdk==0.3.0
+ml-trainer-sdk==0.3.1
 python-dotenv
 # aipmodel==0.2.35
 aipmodel==0.2.48
