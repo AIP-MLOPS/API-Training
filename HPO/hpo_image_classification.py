@@ -35,7 +35,7 @@ if hpo_config.get('epochs',None):
 if hpo_config.get('batch_size',None): 
     hyper_parameters.append(DiscreteParameterRange('General/dataset_config/batch_size',values=[2,4]))
 
-optimizer = (
+optimizer = HyperParameterOptimizer(
     base_task_id=training_config["task_id"],
     hyper_parameters=hyper_parameters, 
     objective_metric_title=training_config["metric"],
