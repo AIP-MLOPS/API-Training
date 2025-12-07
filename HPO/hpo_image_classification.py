@@ -3,34 +3,45 @@ from clearml.automation import HyperParameterOptimizer, UniformIntegerParameterR
 from clearml.automation.optuna import OptimizerOptuna
 from datetime import datetime
 
+task = Task.init(
+    project_name="API training",  # Name of the ClearML project
+    task_name=f"API HPO",  # Name of the task
+    # task_type=Task.TaskTypes.optimizer,  # Type of the task (could also be "training", "testing", etc.)
+    reuse_last_task_id=False  # Whether to reuse the last task ID (set to False for a new task each time)
+)
 
 training_config = {
     "task_id" : 'default',
     "queue_name": 'default',
     "total_max_jobs": '10',
+    "metric": 'f1'
 }
 
-hpo_config = {}
+hpo_config = {
+
+    "epochs":None,
+    'batch_size':None
+
+}
 task.connect(training_config)
 task.connect(hpo_config)
+
 # Create optimizer
 hyper_parameters = []
-if hpo_config accuracy
-    h append UniformIntegerParameterRange('General/n_estimators', min_value=50, max_value=200, step_size=50),
-hyper_parameters = [
-    UniformIntegerParameterRange('General/n_estimators', min_value=50, max_value=200, step_size=50),
-    DiscreteParameterRange('General/max_depth', values=[2, 3, 5, 7]),
-]
+hyper_parameters.append(DiscreteParameterRange('General/trainer_config/lr',values=[0.0001,0.0005,0.001]))
+# if hpo_config.get('lr',None): 
+if hpo_config.get('epochs',None): 
+    hyper_parameters.append(DiscreteParameterRange('General/trainer_config/epochs',values=[3,8,10]))
+if hpo_config.get('batch_size',None): 
+    hyper_parameters.append(DiscreteParameterRange('General/dataset_config/batch_size',values=[2,4]))
+
 optimizer = (
     base_task_id=training_config["task_id"],
-    hyper_parameters=[
-        UniformIntegerParameterRange('General/n_estimators', min_value=50, max_value=200, step_size=50),
-        DiscreteParameterRange('General/max_depth', values=[2, 3, 5, 7]),
-    ],
-    objective_metric_title='accuracy',
-    objective_metric_series='test',
+    hyper_parameters=hyper_parameters 
+    objective_metric_title=training_config["metric"],
+    objective_metric_series='Validation',
     objective_metric_sign='max',
-    max_number_of_concurrent_tasks=2,
+    max_number_of_concurrent_tasks=1,
     optimizer_class=OptimizerOptuna,
     execution_queue=training_config["queue_name"],
     total_max_jobs=training_config["total_max_jobs"],
