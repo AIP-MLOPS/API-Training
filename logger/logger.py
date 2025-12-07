@@ -15,7 +15,7 @@ class CL_Logger(LoggerTemplate):
             iteration=iteration,
         )
     
-    def plot(self,title,series,data,iteration=0):
+    def log_plot(self,title,series,data,iteration=0):
 
         plt.plot(data.pop('X'),data.pop('Y'),**data)
         self.logger.report_matplotlib_figure(
