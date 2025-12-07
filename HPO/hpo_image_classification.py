@@ -37,7 +37,7 @@ if hpo_config.get('batch_size',None):
 
 optimizer = (
     base_task_id=training_config["task_id"],
-    hyper_parameters=hyper_parameters 
+    hyper_parameters=hyper_parameters, 
     objective_metric_title=training_config["metric"],
     objective_metric_series='Validation',
     objective_metric_sign='max',
