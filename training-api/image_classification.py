@@ -11,7 +11,7 @@ from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
 class IMG_logger(CL_Logger):
 
-    def on_epoch_start(self):
+    def on_epoch_end(self):
         self.log_scaler("Common Values","Epoch",self.trainer.current_epoch)
         if self.trainer.train_metrics:
             for average_method in self.trainer.train_metrics.average_methods:
