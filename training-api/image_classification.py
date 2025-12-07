@@ -17,15 +17,15 @@ class IMG_logger(CL_Logger):
         self.log_plot("Common Values","Epoch",self.trainer.current_epoch)
         if self.trainer.train_metrics:
             for average_method in self.trainer.train_metrics.average_methods:
-                self.log_scaler("Output Metrics/Train/precision",f"{average_method}",self.trainer.train_results[f'precision_{average_method}'])
-                self.log_scaler("Output Metrics/Train/recall",f"{average_method}",self.trainer.train_results[f'recall_{average_method}'])
-                self.log_scaler("Output Metrics/Train/f1",f"{average_method}",self.trainer.train_results[f'f1_{average_method}'])
+                self.log_scaler("Output Metrics/Train/precision",f"{average_method}",self.trainer.train_results[f'precision_{average_method}'],iteration=self.trainer.current_epoch)
+                self.log_scaler("Output Metrics/Train/recall",f"{average_method}",self.trainer.train_results[f'recall_{average_method}'],iteration=self.trainer.current_epoch)
+                self.log_scaler("Output Metrics/Train/f1",f"{average_method}",self.trainer.train_results[f'f1_{average_method}'],iteration=self.trainer.current_epoch)
         
         if self.trainer.val_metrics:
             for average_method in self.trainer.val_metrics.average_methods:
-                self.log_scaler("Output Metrics/Train/precision",f"{average_method}",self.trainer.val_results[f'precision_{average_method}'])
-                self.log_scaler("Output Metrics/Train/recall",f"{average_method}",self.trainer.val_results[f'recall_{average_method}'])
-                self.log_scaler("Output Metrics/Train/f1",f"{average_method}",self.trainer.val_results[f'f1_{average_method}'])
+                self.log_scaler("Output Metrics/Train/precision",f"{average_method}",self.trainer.val_results[f'precision_{average_method}'],iteration=self.trainer.current_epoch)
+                self.log_scaler("Output Metrics/Train/recall",f"{average_method}",self.trainer.val_results[f'recall_{average_method}'],iteration=self.trainer.current_epoch)
+                self.log_scaler("Output Metrics/Train/f1",f"{average_method}",self.trainer.val_results[f'f1_{average_method}'],iteration=self.trainer.current_epoch)
 
 
 image_logger = IMG_logger()
