@@ -13,6 +13,12 @@ class IMG_logger(CL_Logger):
 
     def on_epoch_start(self):
         self.log_scaler("Common Values","Epoch",self.trainer.current_epoch)
+        if self.trainer.train_metrics:
+            for average_method in self.trainer.train_metrics.average_methods:
+                self.log_scaler("Output Metrics/Train",f"precision/{average_method}",self.trainer.train_results[f'precision_{avg_method}'])
+                self.log_scaler("Output Metrics/Train",f"recall/{average_method}",self.trainer.train_results[f'recall_{avg_method}'])
+                self.log_scaler("Output Metrics/Train",f"f1/{average_method}",self.trainer.train_results[f'f1_{avg_method}'])
+
 image_logger = IMG_logger()
 # --------- ClearML task initialization --------
 task = Task.init(
