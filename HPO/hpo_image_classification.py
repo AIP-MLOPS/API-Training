@@ -11,8 +11,8 @@ task = Task.init(
 )
 
 training_config = {
-    "task_id" : 'default',
-    "queue_name": 'default',
+    "task_id" : 'adc185cc32d946bdb9a94572064af674',
+    "queue_name": 'automluserv2_queue',
     "total_max_jobs": '10',
     "metric": 'f1'
 }
