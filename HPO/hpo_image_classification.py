@@ -11,29 +11,71 @@ task = Task.init(
 )
 
 training_config = {
-    "task_id" : 'adc185cc32d946bdb9a94572064af674',
-    "queue_name": 'automluserv2_queue',
+    "task_id" : 'default',
+    "queue_name": 'queue',
     "total_max_jobs": 10,
     "metric": 'Loss'
 }
 
 hpo_config = {
-
+    "lr" : None
     "epochs":None,
     'batch_size':None
 
 }
+
 task.connect(training_config)
 task.connect(hpo_config)
 
 # Create optimizer
+# hyper_parameters = []
+# hyper_parameters.append(DiscreteParameterRange('General/trainer_config/lr',values=[0.0001,0.0005,0.001]))
+# # if hpo_config.get('lr',None): 
+# if hpo_config.get('epochs',None): 
+#     hyper_parameters.append(DiscreteParameterRange('General/trainer_config/epochs',values=[3,8,10]))
+# if hpo_config.get('batch_size',None): 
+#     hyper_parameters.append(DiscreteParameterRange('General/dataset_config/batch_size',values=[2,4]))
+
+# Create optimizer
 hyper_parameters = []
-hyper_parameters.append(DiscreteParameterRange('General/trainer_config/lr',values=[0.0001,0.0005,0.001]))
-# if hpo_config.get('lr',None): 
-if hpo_config.get('epochs',None): 
-    hyper_parameters.append(DiscreteParameterRange('General/trainer_config/epochs',values=[3,8,10]))
-if hpo_config.get('batch_size',None): 
-    hyper_parameters.append(DiscreteParameterRange('General/dataset_config/batch_size',values=[2,4]))
+
+# Case 1: If *all three* are None → only append LR search
+if (
+    hpo_config.get("lr") is None and
+    hpo_config.get("epochs") is None and
+    hpo_config.get("batch_size") is None
+):
+    hyper_parameters.append(
+        DiscreteParameterRange(
+            'General/trainer_config/lr',
+            values=[0.0001, 0.0005, 0.001]
+        )
+    )
+else:
+    # Case 2: Append only params that are NOT None
+    if hpo_config.get("lr") is not None:
+        hyper_parameters.append(
+            DiscreteParameterRange(
+                'General/trainer_config/lr',
+                values=[0.0001, 0.0005, 0.001]
+            )
+        )
+
+    if hpo_config.get("epochs") is not None:
+        hyper_parameters.append(
+            DiscreteParameterRange(
+                'General/trainer_config/epochs',
+                values=[3, 8, 10]
+            )
+        )
+
+    if hpo_config.get("batch_size") is not None:
+        hyper_parameters.append(
+            DiscreteParameterRange(
+                'General/dataset_config/batch_size',
+                values=[2, 4]
+            )
+        )
 
 optimizer = HyperParameterOptimizer(
     base_task_id=training_config["task_id"],
