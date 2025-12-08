@@ -18,9 +18,9 @@ training_config = {
 }
 
 hpo_config = {
-    "lr" : None
+    "lr" : None,
     "epochs":None,
-    'batch_size':None
+    'batch_size':None,
 
 }
 
