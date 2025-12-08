@@ -14,7 +14,7 @@ class IMG_logger(CL_Logger):
 
     def on_epoch_end(self):
         
-        self.log_scaler("Common Values","Epoch",self.trainer.current_epoch)
+        self.log_scaler("Common Values","Epoch",self.trainer.current_epoch,iteration=self.trainer.current_epoch)
         if self.trainer.train_metrics:
             for average_method in self.trainer.train_metrics.average_methods:
 
