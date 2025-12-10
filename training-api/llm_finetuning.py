@@ -47,7 +47,7 @@ s3_endpoint_url = os.getenv("CEPH_ENDPOINT_URL")
 print(user_management_api, clearml_api_host, s3_endpoint_url)
 
 data_model_reg_cfg= {
-    'clearml_username': 'mlopsuser03',
+    'clearml_username': 'default',
     'token': 'default'
 }
 
