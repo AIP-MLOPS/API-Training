@@ -10,18 +10,18 @@ from transformers import TrainerCallback
 from ml_trainer import AutoTrainer
 from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
-from logger.logger import CL_Logger
+# from logger.logger import CL_Logger
 
-# torch._dynamo.config.disable = False
+torch._dynamo.config.disable = True
 
-class LLM_Logger(CL_Logger):
-    def on_train_enn(self):
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["loss"])
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["total_tokens"])
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["token_accuracy"])
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["perplexity"])
+# class LLM_Logger(CL_Logger):
+#     def on_train_enn(self):
+#         self.log_scaler("Loss","Train",self.trainer.final_metrics["loss"])
+#         self.log_scaler("Loss","Train",self.trainer.final_metrics["total_tokens"])
+#         self.log_scaler("Loss","Train",self.trainer.final_metrics["token_accuracy"])
+#         self.log_scaler("Loss","Train",self.trainer.final_metrics["perplexity"])
 
-llm_logger = LLM_Logger()
+# llm_logger = LLM_Logger()
 # import the torch callback for checkpointing
 # import os
 # import shutil
@@ -128,7 +128,7 @@ config = {
         
         "save_steps": 0.5,
         "save_strategy": "epoch",
-        "log_callbacks": [llm_logger],
+        # "log_callbacks": [llm_logger],
         
 
         "optim": "adamw_8bit",
