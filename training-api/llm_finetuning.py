@@ -123,7 +123,7 @@ config = {
         "dataset_text_field": "text",
         "batch_size": 2, # *
         # "epochs": 1, # *
-        "epochs": 1, # *
+        "epochs": 1.0, # *
         "learning_rate": 1e-4, # *
         
         "save_steps": 0.5,
