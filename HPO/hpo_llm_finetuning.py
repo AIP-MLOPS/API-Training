@@ -65,7 +65,7 @@ else:
         hyper_parameters.append(
             DiscreteParameterRange(
                 'General/trainer_config/epochs',
-                values=[3, 8, 10]
+                values=[1, 3, 5]
             )
         )
 
