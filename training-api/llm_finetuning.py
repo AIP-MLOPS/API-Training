@@ -12,7 +12,7 @@ from aipmodel.model_registry import MLOpsManager
 from data.sdk.download_sdk import s3_download
 from logger.logger import CL_Logger
 
-torch._dynamo.config.disable = True
+torch._dynamo.config.disable = False
 
 class LLM_Logger(CL_Logger):
     def on_train_enn(self):
