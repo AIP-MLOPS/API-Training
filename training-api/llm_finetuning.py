@@ -15,7 +15,7 @@ from logger.logger import CL_Logger
 torch._dynamo.config.disable = True
 
 class LLM_Logger(CL_Logger):
-    def on_train_enn(self):
+    def on_train_end(self):
         self.log_scaler("Loss","Train",self.trainer.final_metrics["loss"])
         self.log_scaler("Loss","Train",self.trainer.final_metrics["total_tokens"])
         self.log_scaler("Loss","Train",self.trainer.final_metrics["token_accuracy"])
