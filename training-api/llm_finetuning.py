@@ -17,9 +17,9 @@ torch._dynamo.config.disable = True
 class LLM_Logger(CL_Logger):
     def on_train_end(self):
         self.log_scaler("Loss","Train",self.trainer.final_metrics["loss"])
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["total_tokens"])
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["token_accuracy"])
-        self.log_scaler("Loss","Train",self.trainer.final_metrics["perplexity"])
+        self.log_scaler("Total Tokens","Train",self.trainer.final_metrics["total_tokens"])
+        self.log_scaler("Token Accuracy","Train",self.trainer.final_metrics["token_accuracy"])
+        self.log_scaler("Perplexity","Train",self.trainer.final_metrics["perplexity"])
 
 llm_logger = LLM_Logger()
 # import the torch callback for checkpointing
