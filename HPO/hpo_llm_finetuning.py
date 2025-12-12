@@ -38,17 +38,19 @@ task.connect(hpo_config)
 
 # Create optimizer
 hyper_parameters = []
-
+print(f"HPO config is: {hpo_config}")
 # Case 1: If *all three* are None → only append LR search
 if (
     hpo_config.get("lr") is None and
     hpo_config.get("epochs") is None and
     hpo_config.get("batch_size") is None
 ):
+    print("No Value was detected for `lr`/`epochs`/`batch_size`")
     hyper_parameters.append(
         DiscreteParameterRange(
             'General/trainer_config/lr',
-            values=[0.0001, 0.0005, 0.001]
+            values=[0.0005, 0.001]
+            # values=hpo_config['lr']
         )
     )
 else:
@@ -57,7 +59,7 @@ else:
         hyper_parameters.append(
             DiscreteParameterRange(
                 'General/trainer_config/lr',
-                values=[0.0001, 0.0005, 0.001]
+                values=hpo_config['lr']
             )
         )
 
@@ -65,7 +67,7 @@ else:
         hyper_parameters.append(
             DiscreteParameterRange(
                 'General/trainer_config/epochs',
-                values=[1, 3, 5]
+                values=hpo_config['epochs']
             )
         )
 
@@ -73,9 +75,10 @@ else:
         hyper_parameters.append(
             DiscreteParameterRange(
                 'General/dataset_config/batch_size',
-                values=[2, 4]
+                values=hpo_config['batch_size']
             )
         )
+print(f"hyper_parameters for HPO are: {hyper_parameters}")
 
 optimizer = HyperParameterOptimizer(
     base_task_id=training_config["task_id"],
