@@ -10,7 +10,8 @@
 
 
 #ml-trainer-sdk==0.3.2
-ml-trainer-sdk==0.3.3.3
+#ml-trainer-sdk==0.3.3.3
+ml-trainer-sdk==0.3.4
 python-dotenv
 # aipmodel==0.2.35
 aipmodel==0.2.48
