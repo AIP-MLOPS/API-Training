@@ -14,7 +14,7 @@ training_config = {
     "task_id" : 'default',
     "queue_name": 'queue',
     "total_max_jobs": 10,
-    "metric": 'Loss'
+    "metric": 'loss'
 }
 
 hpo_config = {
