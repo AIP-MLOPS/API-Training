@@ -150,6 +150,7 @@ config = {
             "load_model": None,        # *
             "save_model": None,        # *
             "epochs": 10,              # *
+            "weight_decay": 0.0,      # *
             "log_callbacks": [image_logger],
             "device": None,      
             

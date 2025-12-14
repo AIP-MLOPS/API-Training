@@ -21,6 +21,7 @@ hpo_config = {
     "lr" : None,
     "epochs":None,
     'batch_size':None,
+    "weight_decay": None,
 
 }
 
@@ -43,7 +44,8 @@ print(f"HPO config is: {hpo_config}")
 if (
     hpo_config.get("lr") is None and
     hpo_config.get("epochs") is None and
-    hpo_config.get("batch_size") is None
+    hpo_config.get("batch_size") is None and 
+    hpo_config.get("weight_decay") is None
 ):
     print("No Value was detected for `lr`/`epochs`/`batch_size`")
     hyper_parameters.append(
@@ -75,6 +77,14 @@ else:
             DiscreteParameterRange(
                 'General/dataset_config/batch_size',
                 values=hpo_config['batch_size']
+            )
+        )
+        
+    if hpo_config.get("weight_decay") is not None:
+        hyper_parameters.append(
+            DiscreteParameterRange(
+                'General/trainer_config/weight_decay',
+                values=hpo_config['weight_decay']
             )
         )
 print(f"hyper_parameters for HPO are: {hyper_parameters}")
