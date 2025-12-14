@@ -125,6 +125,7 @@ config = {
         # "epochs": 1, # *
         "epochs": 1.0, # *
         "learning_rate": 1e-4, # *
+        "weight_decay": 0.01,
         
         "save_steps": 0.5,
         "save_strategy": "epoch",
