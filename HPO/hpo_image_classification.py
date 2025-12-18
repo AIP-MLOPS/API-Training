@@ -94,7 +94,7 @@ optimizer = HyperParameterOptimizer(
     hyper_parameters=hyper_parameters, 
     objective_metric_title=training_config["metric"],
     objective_metric_series='Validation',
-    objective_metric_sign='max',
+    objective_metric_sign='min',
     max_number_of_concurrent_tasks=1,
     optimizer_class=OptimizerOptuna,
     execution_queue=training_config["queue_name"],
@@ -109,4 +109,10 @@ optimizer.wait()
 
 top_experiments = optimizer.get_top_experiments(top_k=3)
 print("Top experiments:", [t.id for t in top_experiments])
+
+task.upload_artifact(
+    name="registered_top_experiment",
+    artifact_object=top_experiments[0]
+    )
+    
 optimizer.stop()
