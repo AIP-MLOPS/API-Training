@@ -94,6 +94,10 @@ class PrintSaveDirCallback(TrainerCallback):
                 source_path=args.output_dir,
                 model_name=model_name,
             )
+            task.upload_artifact(
+                name="registered_checkpoint_id",
+                artifact_object=model_id
+                )
             print(f"[Callback] Model uploaded to registry with ID: {model_id}\n")
         except Exception as e:
             print(f"[Callback] Failed to upload model '{model_name}': {e}")
@@ -251,4 +255,8 @@ if config["trainer_config"]["save_model"] is not None:
         source_type="local",
         source_path="full_model_save/",
         model_name = model_reg + "_" + str(int(time.time())),
+    )
+    task.upload_artifact(
+    name="registered_model_id",
+    artifact_object=local_model_id
     )
