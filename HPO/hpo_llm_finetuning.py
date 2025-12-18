@@ -112,7 +112,7 @@ print("Top experiments:", [t.id for t in top_experiments])
 
 task.upload_artifact(
     name="registered_top_experiment",
-    artifact_object=top_experiments[0]
+    artifact_object=top_experiments[0].id
     )
-    
+
 optimizer.stop()
