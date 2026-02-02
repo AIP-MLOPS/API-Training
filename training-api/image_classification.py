@@ -192,7 +192,10 @@ if config["trainer_config"]["load_model"] is not None :
         local_dest="."
     )
     # !!! ask from the data team to load from the right path
-    config["trainer_config"]["load_model"] = f"./{model_id}/"
+    version = manager.get_latest_verison(model_reg)
+    model_dir = f'./{model_id}/{version}/'
+
+    config["trainer_config"]["load_model"] = model_dir
 
 if config['trainer_config']["resume_from_checkpoint"] is not None:
 

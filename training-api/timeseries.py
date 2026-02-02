@@ -200,6 +200,7 @@ if load_model:
         model_name= model_reg,
         local_dest="."
     )
+    
 
 print(cfg)
 
