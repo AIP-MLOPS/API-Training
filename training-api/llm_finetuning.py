@@ -181,6 +181,8 @@ if config["trainer_config"]["load_model"] is not None:
     else:
         config["model_name"] = f'./{model_id}/'
         print(f"Model path set to: {config['model_name']}")
+        
+    config["model_name"] = f'./{model_id}/{version}/'
 
 
 if config['trainer_config']["resume_from_checkpoint"] is not None:
