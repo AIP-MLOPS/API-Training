@@ -161,7 +161,7 @@ if config["trainer_config"]["load_model"] is not None:
         model_name= model_reg,  # or any valid model ID
         local_dest="."
     )
-    version = manager.get_latest_verison(model_reg)
+    version = manager.get_latest_version(model_reg)
     model_dir = f'./{model_id}/{version}/'
 
     # Find the first folder inside model_dir

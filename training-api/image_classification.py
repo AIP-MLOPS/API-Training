@@ -192,7 +192,7 @@ if config["trainer_config"]["load_model"] is not None :
         local_dest="."
     )
     # !!! ask from the data team to load from the right path
-    version = manager.get_latest_verison(model_reg)
+    version = manager.get_latest_version(model_reg)
     model_dir = f'./{model_id}/{version}/'
 
     config["trainer_config"]["load_model"] = model_dir
