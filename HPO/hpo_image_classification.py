@@ -22,7 +22,7 @@ hpo_config = {
     "epochs":None,
     'batch_size':None,
     "weight_decay": None,
-    "models": None,
+    "model_arc": None,
 
 }
 
@@ -47,7 +47,7 @@ if (
     hpo_config.get("epochs") is None and
     hpo_config.get("batch_size") is None and 
     hpo_config.get("weight_decay") is None and
-    hpo_config.get("models") is None 
+    hpo_config.get("model_arc") is None 
 
 ):
     print("No Value was detected for `lr`/`epochs`/`batch_size`")
@@ -90,7 +90,7 @@ else:
                 values=hpo_config['weight_decay']
             )
         )
-    if hpo_config.get("models") is not None:
+    if hpo_config.get("model_arc") is not None:
         hyper_parameters.append(
             DiscreteParameterRange(
                 'General/model_config/name',
