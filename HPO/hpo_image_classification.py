@@ -94,7 +94,7 @@ else:
         hyper_parameters.append(
             DiscreteParameterRange(
                 'General/model_config/name',
-                values=hpo_config['model']
+                values=hpo_config['model_arc']
             )
         )
 print(f"hyper_parameters for HPO are: {hyper_parameters}")
