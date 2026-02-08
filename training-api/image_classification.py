@@ -193,7 +193,10 @@ if config["trainer_config"]["load_model"] is not None :
     )
     # !!! ask from the data team to load from the right path
     version = manager.get_latest_version(model_reg)
-    model_dir = f'./{model_id}/{version}/'
+    model_data = manager.get_model_info(model_reg)
+    folder_name = model_data.get("folder_name")
+    print(f"version is: {version}")
+    model_dir = f'./{model_id}/{version}/{folder_name}'
 
     config["trainer_config"]["load_model"] = model_dir
 
