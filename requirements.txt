@@ -15,7 +15,8 @@ ml-trainer-sdk==0.3.4
 python-dotenv
 # aipmodel==0.2.35
 #aipmodel==0.2.48
-aipmodel==0.2.60
+#aipmodel==0.2.60
+aipmodel==0.2.63
 boto3
 huggingface-hub>=0.34.0,<1.0
 clearml

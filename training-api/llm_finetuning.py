@@ -162,8 +162,10 @@ if config["trainer_config"]["load_model"] is not None:
         local_dest="."
     )
     version = manager.get_latest_version(model_reg)
+    model_data = manager.get_model_info(model_reg)
+    folder_name = model_data.get("folder_name")
     print(f"version is: {version}")
-    model_dir = f'./{model_id}/{version}/'
+    model_dir = f'./{model_id}/{version}/{folder_name}'
 
     # Find the first folder inside model_dir
     subfolders = [f for f in os.listdir(model_dir) if os.path.isdir(os.path.join(model_dir, f))]
@@ -182,7 +184,7 @@ if config["trainer_config"]["load_model"] is not None:
         config["model_name"] = f'./{model_id}/'
         print(f"Model path set to: {config['model_name']}")
 
-    config["model_name"] = f'./{model_id}/{version}/'
+    config["model_name"] = f'./{model_id}/{version}/{folder_name}'
     print(f"Model path set to: {config['model_name']}")
 
 
