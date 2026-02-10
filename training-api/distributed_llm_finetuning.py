@@ -201,8 +201,7 @@ with open('config.yml', 'w') as f:
 
 print("\n[STEP 7] Starting Axolotl Training")
 result = subprocess.run(
-    ['accelerate', 'launch', f'--num_processes={dataset_name=config["gpu_num_proc"]}', '-m', 'axolotl.cli.train', 'config.yml'],
+    ['accelerate', 'launch', f'--num_processes={config["gpu_num_proc"]}', '-m', 'axolotl.cli.train', 'config.yml'],
     check=True
 )
-
 print("Training completed!")
