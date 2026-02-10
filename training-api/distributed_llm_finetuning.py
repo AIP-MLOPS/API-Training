@@ -162,7 +162,7 @@ config_updates = {
 task.connect(config_updates)
 
 # Create config.yml with updated paths
-config = {
+axolotl_config = {
     'base_model': model_dir,
     'model_type': 'AutoModelForCausalLM',
     'tokenizer_type': 'AutoTokenizer',
@@ -208,7 +208,7 @@ config = {
 }
 
 with open('config.yml', 'w') as f:
-    yaml.dump(config, f)
+    yaml.dump(axolotl_config, f)
 
 print("\n[STEP 7] Starting Axolotl Training")
 result = subprocess.run(
