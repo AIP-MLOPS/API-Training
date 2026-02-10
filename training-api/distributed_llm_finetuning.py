@@ -119,9 +119,9 @@ dataset_object = s3_download(
         dataset_name=config["dataset_config"]["source"],
         absolute_path=Path(__file__).parent/"dataset",
         token=data_model_reg_cfg['token'],
-        user_management_url=user_management_api,
-        clearml_api_host=clearml_api_host,
-        s3_endpoint_url=s3_endpoint_url,
+        user_management_url=os.getenv("USER_MANAGEMENT_API"),
+        clearml_api_host=os.getenv("CLEARML_API_HOST"),
+        s3_endpoint_url=os.getenv("CEPH_ENDPOINT_URL"),
         dataset_type="text_generation",
         # user_name=data_model_reg_cfg['clearml_username'],
     )
