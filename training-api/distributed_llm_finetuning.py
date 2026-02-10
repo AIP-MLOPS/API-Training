@@ -215,8 +215,14 @@ print("\n[STEP 7] Starting Axolotl Training")
 #     ['accelerate', 'launch', f'--num_processes={config["gpu_num_proc"]}', '-m', 'axolotl.cli.train', 'config.yml'],
 #     check=True
 # )
+# result = subprocess.run(
+#     ['python', '-m', 'accelerate.commands.launch', f'--num_processes={config["gpu_num_proc"]}', '-m', 'axolotl.cli.train', 'config.yml'],
+#     check=True
+# )
+print("\n[STEP 7] Starting Axolotl Training")
 result = subprocess.run(
-    ['python', '-m', 'accelerate.commands.launch', f'--num_processes={config["gpu_num_proc"]}', '-m', 'axolotl.cli.train', 'config.yml'],
+    ['bash', '-c', 'source /opt/mlops/bin/activate && accelerate launch --num_processes={} -m axolotl.cli.train config.yml'.format(config["gpu_num_proc"])],
     check=True
 )
+
 print("Training completed!")
