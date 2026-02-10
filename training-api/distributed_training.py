@@ -23,9 +23,8 @@ data_model_reg_cfg= {
     'token': 'default'
 }
 config = {
-    "task": "llm_finetuning",
-    # "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
-    "model_name": "Qwen/Qwen2.5-0.5B-Instruct_1762009294_1762010845",
+    # "task": "distributed_training_llm_finetuning",
+    "model_name": "qwen2.5-0.5b-base",
 
     # -----------------------------
     # DATASET CONFIG
@@ -33,35 +32,35 @@ config = {
     "system_prompt": "You are a helpful assistant.",
     "dataset_config": {
         "source": "medical_qaa",
-        "format_fn": None,
+        # "format_fn": None,
         # "format_fn": "default",
-        "test_size": None,
+        # "test_size": None,
     },
 
     # -----------------------------
     # TRAINER CONFIG
     # -----------------------------
     "trainer_config": {
-        "dataset_text_field": "text",
+        # "dataset_text_field": "text",
         "batch_size": 2, # *
         # "epochs": 1, # *
         "epochs": 1.0, # *
         "learning_rate": 1e-4, # *
         "weight_decay": 0.01,
         
-        "save_steps": 0.5,
-        "save_strategy": "epoch",
-        "log_callbacks": [llm_logger],
+        # "save_steps": 0.5,
+        # "save_strategy": "epoch",
+        # "log_callbacks": [llm_logger],
         
 
-        "optim": "adamw_8bit",
-        "save_total_limit": 1,
-        "output_dir": "./model",
-        "resume_from_checkpoint": None,
-        "callbacks": [PrintSaveDirCallback()],
+        # "optim": "adamw_8bit",
+        # "save_total_limit": 1,
+        # "output_dir": "./model",
+        # "resume_from_checkpoint": None,
+        # "callbacks": [PrintSaveDirCallback()],
 
-        "load_model": None,  # set to True to load model from model registry
-        "save_model": None,  # set to True to save model to model registry
+        # "load_model": None,  # set to True to load model from model registry
+        # "save_model": None,  # set to True to save model to model registry
     },
 }
 
@@ -77,15 +76,15 @@ manager = MLOpsManager(
 # print("\n[STEP 3] Get Model Info")
 # manager.get_model_info("qwen2.5-0.5b-base")
 
-print("\n[STEP 4] Download Model")
-result = manager.get_model(model_name="qwen2.5-0.5b-base", local_dest="./downloads/latest")
+print("Download Model")
+result = manager.get_model(model_name=config["model_name"], local_dest="./model/")
 print(f"Model download result: {result}")
 print("Model download completed successfully!")
 
 # Find the actual model path
-print("\n[STEP 5] Finding model configuration...")
+print("Finding model configuration...")
 find_result = subprocess.run(
-    ["find", "/workspace/downloads", "-name", "config.json", "-type", "f"],
+    ["find", "./model/", "-name", "config.json", "-type", "f"],
     capture_output=True, text=True
 )
 if find_result.stdout:
@@ -94,24 +93,25 @@ if find_result.stdout:
     print(f"Found model at: {model_dir}")
 else:
     print("WARNING: No config.json found in model directory")
-    model_dir = "./downloads/latest"
+    model_dir = "./model/"
 
 # Download dataset
-print("\n[STEP 6] Download Dataset using Data Layer SDK")
+print("Download Dataset using Data Layer SDK")
 dataset_path = None
-dataset_dir = Path("/workspace/dataset")
+dataset_dir = Path("./dataset")
 dataset_dir.mkdir(parents=True, exist_ok=True)
 
 print("Downloading dataset: mshojaei_mini_v1")
 dataset_object = s3_download(
-    dataset_name="mshojaei_mini_v1",
+    dataset_name=config["dataset_config"]["source"],
     absolute_path=dataset_dir,
-    token=os.getenv("USER_TOKEN"),
+    user_token=data_model_reg_cfg['token'],
     user_management_url=os.getenv("USER_MANAGEMENT_API"),
     clearml_api_host=os.getenv("CLEARML_API_HOST"),
     s3_endpoint_url=os.getenv("CEPH_ENDPOINT_URL"),
     dataset_type="text_generation",
 )
+
 print("✓ Dataset download completed successfully!")
 
 import os as os_module
