@@ -30,3 +30,4 @@ ryn-data==0.2.21
 optuna==4.6.0
 
 axolotl==0.12.2
+accelerate 
