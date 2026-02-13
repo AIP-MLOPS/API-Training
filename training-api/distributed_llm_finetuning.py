@@ -202,6 +202,8 @@ axolotl_config = {
         'field_instruction': 'instruction',
         'field_output': 'response'
     }],
+    'dataset_processes': 1,
+    'preprocessing_num_workers': 1,
     'dataset_prepared_path': 'last_run_prepared',
     'val_set_size': 0.05,
     'output_dir': './outputs',
