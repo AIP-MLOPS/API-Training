@@ -139,7 +139,8 @@ if os_module.path.exists(dataset_dir):
     
     for item in items:
         item_path = dataset_dir / item
-        if item.endswith(('.jsonl', '.json', '.parquet', '.csv')):
+        # if item.endswith(('.jsonl', '.json', '.parquet', '.csv')):
+        if item.endswith(('.parquet', '.csv')):
             dataset_path = str(item_path)
             print(f"✓ Found dataset file: {dataset_path}")
             break
