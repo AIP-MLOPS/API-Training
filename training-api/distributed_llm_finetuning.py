@@ -147,7 +147,13 @@ if os_module.path.exists(dataset_dir):
     
     if not dataset_path:
         find_data_result = subprocess.run(
-            ["find", str(dataset_dir), "-type", "f", "-name", "*.jsonl", "-o", "-name", "*.json", "-o", "-name", "*.parquet"],
+            # ["find", str(dataset_dir), "-type", "f", "-name", "*.jsonl", "-o", "-name", "*.json", "-o", "-name", "*.parquet"],
+            [
+                "find", str(dataset_dir),
+                "-type", "f",
+                "-name", "*.parquet"
+            ]
+
             capture_output=True, text=True
         )
         if find_data_result.stdout.strip():
@@ -156,6 +162,21 @@ if os_module.path.exists(dataset_dir):
         else:
             dataset_path = str(dataset_dir)
             print(f"⚠ No specific data file found, using directory: {dataset_path}")
+# dataset_path = None
+
+# for root, _, files in os.walk(dataset_dir):
+#     for f in files:
+#         if f.endswith((".jsonl", ".json", ".parquet", ".csv")):
+#             dataset_path = str(Path(root) / f)
+#             break
+#     if dataset_path:
+#         break
+
+# if not dataset_path:
+#     raise RuntimeError(f"No dataset file found inside {dataset_dir}")
+
+print(f"✓ Using dataset file: {dataset_path}")
+
     
 # Update config with actual paths
 config_updates = {
