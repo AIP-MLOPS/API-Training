@@ -152,7 +152,7 @@ if os_module.path.exists(dataset_dir):
                 "find", str(dataset_dir),
                 "-type", "f",
                 "-name", "*.parquet"
-            ]
+            ],
 
             capture_output=True, text=True
         )
