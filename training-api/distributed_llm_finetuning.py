@@ -210,7 +210,7 @@ axolotl_config = {
     'datasets': [{
         'path': dataset_path,
         # 'type': 'completion',
-        'type': 'sharegpt',  # Changed from 'completion' to 'sharegpt' for messages format
+        'type': 'chat_template',  # Changed from 'completion' to 'sharegpt' for messages format
         'field_messages': 'messages'
         # 'format_fn': 'default',
         # 'field_instruction': 'instruction',
