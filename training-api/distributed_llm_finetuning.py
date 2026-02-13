@@ -176,7 +176,19 @@ if os_module.path.exists(dataset_dir):
 #     raise RuntimeError(f"No dataset file found inside {dataset_dir}")
 
 print(f"✓ Using dataset file: {dataset_path}")
+# After dataset download, add this diagnostic code:
+print("\n" + "="*60)
+print("DATASET INSPECTION")
+print("="*60)
 
+import pandas as pd
+df = pd.read_parquet(dataset_path)
+print(f"\nDataset columns: {df.columns.tolist()}")
+print(f"\nNumber of rows: {len(df)}")
+print(f"\nFirst row:\n{df.iloc[0].to_dict()}")
+print(f"\nSample of first 3 rows:")
+print(df.head(3))
+print("="*60 + "\n")
     
 # Update config with actual paths
 config_updates = {
