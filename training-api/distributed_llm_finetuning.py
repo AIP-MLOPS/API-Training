@@ -209,10 +209,12 @@ axolotl_config = {
     'strict': False,
     'datasets': [{
         'path': dataset_path,
-        'type': 'completion',
+        # 'type': 'completion',
+        'type': 'sharegpt',  # Changed from 'completion' to 'sharegpt' for messages format
+        'field_messages': 'messages'
         # 'format_fn': 'default',
-        'field_instruction': 'instruction',
-        'field_output': 'response'
+        # 'field_instruction': 'instruction',
+        # 'field_output': 'response'
     }],
     'dataset_processes': 1,
     'preprocessing_num_workers': 1,
