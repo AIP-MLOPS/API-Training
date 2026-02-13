@@ -198,7 +198,7 @@ axolotl_config = {
     'datasets': [{
         'path': dataset_path,
         'type': 'alpaca',
-        'format_fn': 'default',
+        # 'format_fn': 'default',
         'field_instruction': 'instruction',
         'field_output': 'response'
     }],
