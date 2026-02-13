@@ -181,7 +181,7 @@ print(f"✓ Using dataset file: {dataset_path}")
 # Update config with actual paths
 config_updates = {
     'base_model': model_dir,
-    'datasets': [{'path': dataset_path, 'type': 'completion'}]
+    'datasets': [{'path': dataset_path, 'type': 'alpaca'}]
 }
 
 # Connect configuration to ClearML
@@ -197,7 +197,7 @@ axolotl_config = {
     'strict': False,
     'datasets': [{
         'path': dataset_path,
-        'type': 'completion',
+        'type': 'alpaca',
         'format_fn': 'default',
         'field_instruction': 'instruction',
         'field_output': 'response'
