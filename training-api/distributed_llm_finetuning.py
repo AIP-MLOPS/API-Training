@@ -225,7 +225,7 @@ axolotl_config = {
     'dataset_prepared_path': 'last_run_prepared',
     # 'val_set_size': 0.05,
     'output_dir': './full_model_save',
-    'output_dir': './outputs',
+    # 'output_dir': './outputs',
     'sequence_len': 512,
     'sample_packing': True,
     'pad_to_sequence_len': True,
