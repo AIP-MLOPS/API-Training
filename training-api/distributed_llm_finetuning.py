@@ -219,7 +219,8 @@ axolotl_config = {
     'dataset_processes': 1,
     'preprocessing_num_workers': 1,
     'dataset_prepared_path': 'last_run_prepared',
-    'val_set_size': 0.05,
+    # 'val_set_size': 0.05,
+    'output_dir': './full_model_save',
     'output_dir': './outputs',
     'sequence_len': 512,
     'sample_packing': True,
@@ -267,4 +268,15 @@ result = subprocess.run(
     check=True
 )
 
+
+
 print("Training completed!")
+local_model_id = manager.add_model(
+    source_type="local",
+    source_path="full_model_save/",
+    model_name = model_reg + "_" + str(int(time.time())),
+)
+task.upload_artifact(
+name="registered_model_id",
+artifact_object=local_model_id
+)
