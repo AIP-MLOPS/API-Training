@@ -277,7 +277,7 @@ print("Training completed!")
 local_model_id = manager.add_model(
     source_type="local",
     source_path="full_model_save/",
-    model_name = model_reg + "_" + str(int(time.time())),
+    model_name = config["model_name"] + "_" + str(int(time.time())),
 )
 task.upload_artifact(
 name="registered_model_id",
