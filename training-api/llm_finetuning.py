@@ -309,33 +309,93 @@ if config["trainer_config"]["load_model"] is not None:
 #         print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
 
 
+# if config['trainer_config']["resume_from_checkpoint"] is not None:
+#     task_id = config['trainer_config']["resume_from_checkpoint"]
+#     checkpoint_name = f"checkpoint-{task_id}"
+#     print(f"\nResuming from task ID: {task_id}")
+
+#     model_id = manager.get_model_id_by_name(checkpoint_name)
+
+
+#     manager.get_model(
+#         model_name=checkpoint_name,
+#         local_dest="."
+#     )
+    
+#     local_model_path = os.path.join(".", model_id)              # ./<model_id>
+#     version = manager.get_latest_version(checkpoint_name)       # e.g., _v1
+#     folder_name = manager.get_model_info(checkpoint_name)["folder_name"]
+
+#     # Local folder after download
+#     # Full local folder path including version
+#     # local_folder = os.path.join(local_model_path, version, folder_name)
+#     local_folder = os.path.join(".", model_id, version, folder_name)
+#     print(f"local_folder is: {local_folder}")
+#     checkpoint_path = find_checkpoint_inside_model(local_folder)
+
+#     config['trainer_config']["resume_from_checkpoint"] = checkpoint_path
+#     print(f"\nResume checkpoint path set to: {checkpoint_path}")
+
 if config['trainer_config']["resume_from_checkpoint"] is not None:
     task_id = config['trainer_config']["resume_from_checkpoint"]
     checkpoint_name = f"checkpoint-{task_id}"
     print(f"\nResuming from task ID: {task_id}")
 
     model_id = manager.get_model_id_by_name(checkpoint_name)
-
-
+    
     manager.get_model(
         model_name=checkpoint_name,
         local_dest="."
     )
     
-    local_model_path = os.path.join(".", model_id)              # ./<model_id>
-    version = manager.get_latest_version(checkpoint_name)       # e.g., _v1
-    folder_name = manager.get_model_info(checkpoint_name)["folder_name"]
-
-    # Local folder after download
-    # Full local folder path including version
-    # local_folder = os.path.join(local_model_path, version, folder_name)
-    local_folder = os.path.join(".", model_id, version, folder_name)
-    print(f"local_folder is: {local_folder}")
+    # First, let's see what was actually downloaded
+    base_path = os.path.join(".", model_id)
+    print(f"\n🔍 Inspecting downloaded model at: {base_path}")
+    
+    if os.path.exists(base_path):
+        print(f"Contents of {base_path}:")
+        for item in os.listdir(base_path):
+            item_path = os.path.join(base_path, item)
+            if os.path.isdir(item_path):
+                print(f"  📁 {item}/")
+                # Show one level deep
+                try:
+                    for subitem in os.listdir(item_path):
+                        print(f"      - {subitem}")
+                except:
+                    pass
+            else:
+                print(f"  📄 {item}")
+    
+    # Now try to find the checkpoint
+    version = manager.get_latest_version(checkpoint_name)
+    model_data = manager.get_model_info(checkpoint_name)
+    folder_name = model_data.get("folder_name", "")
+    
+    # Try different possible paths
+    possible_paths = [
+        os.path.join(".", model_id, version, folder_name),
+        os.path.join(".", model_id, version),
+        os.path.join(".", model_id, folder_name),
+        os.path.join(".", model_id),
+    ]
+    
+    print(f"\n🔎 Checking possible checkpoint locations:")
+    for path in possible_paths:
+        exists = os.path.exists(path)
+        print(f"  {'✅' if exists else '❌'} {path}")
+        if exists:
+            local_folder = path
+            break
+    else:
+        # If none exist, use base path
+        local_folder = base_path
+    
+    print(f"\n📍 Using folder: {local_folder}")
     checkpoint_path = find_checkpoint_inside_model(local_folder)
-
+    
     config['trainer_config']["resume_from_checkpoint"] = checkpoint_path
-    print(f"\nResume checkpoint path set to: {checkpoint_path}")
-
+    print(f"\n✅ Resume checkpoint path set to: {checkpoint_path}")
 
 
 dataset_object = s3_download(
