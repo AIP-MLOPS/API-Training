@@ -315,17 +315,25 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
     print(f"\nResuming from task ID: {task_id}")
 
     model_id = manager.get_model_id_by_name(checkpoint_name)
+
+
     manager.get_model(
         model_name=checkpoint_name,
         local_dest="."
     )
+    
+    local_model_path = os.path.join(".", model_id)              # ./<model_id>
+    version = manager.get_latest_version(checkpoint_name)       # e.g., _v1
+    folder_name = manager.get_model_info(checkpoint_name)["folder_name"]
 
     # Local folder after download
-    local_folder = os.path.join(".", model_id, manager.get_model_info(checkpoint_name)["folder_name"])
+    # Full local folder path including version
+    local_folder = os.path.join(local_model_path, version, folder_name)
     checkpoint_path = find_checkpoint_inside_model(local_folder)
 
     config['trainer_config']["resume_from_checkpoint"] = checkpoint_path
     print(f"\nResume checkpoint path set to: {checkpoint_path}")
+
 
 
 dataset_object = s3_download(
