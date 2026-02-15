@@ -323,6 +323,8 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
     model_data = manager.get_model_info(checkpoint_name)
     folder_name = model_data.get("folder_name")
 
+    print(f"folder name is {folder_name}")
+
     checkpoint_path = find_checkpoint_inside_model(model_id, version, folder_name)
     config['trainer_config']["resume_from_checkpoint"] = checkpoint_path
 
