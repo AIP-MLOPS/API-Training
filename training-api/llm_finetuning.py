@@ -15,40 +15,43 @@ from logger.logger import CL_Logger
 torch._dynamo.config.disable = True
 
 
-def find_checkpoint_inside_model(model_id, version, folder_name):
+def find_checkpoint_inside_model(local_folder):
     """
-    Look for a valid checkpoint inside ./model_id/version/folder_name
+    Look for a valid checkpoint inside a downloaded folder
     Prints folder contents for debugging.
     """
-    base_dir = os.path.join(model_id, version, folder_name)
-    print(f"\nInspecting base folder: {base_dir}")
-    print("Contents:", os.listdir(base_dir))
+    print(f"\nInspecting folder: {local_folder}")
 
-    # 1️⃣ If the folder itself contains HF files, return it
-    if os.path.exists(os.path.join(base_dir, "pytorch_model.bin")) \
-       or os.path.exists(os.path.join(base_dir, "adapter_config.json")):
-        print("Found HF files in base folder!")
-        return base_dir
+    if not os.path.exists(local_folder):
+        print(f"Folder does not exist: {local_folder}")
+        return local_folder
 
-    # 2️⃣ Otherwise, look for subfolders starting with 'checkpoint'
+    print("Contents:", os.listdir(local_folder))
+
+    # Check if HF files are here
+    if os.path.exists(os.path.join(local_folder, "pytorch_model.bin")) \
+       or os.path.exists(os.path.join(local_folder, "adapter_config.json")):
+        print("Found HF files in this folder!")
+        return local_folder
+
+    # Look for subfolders starting with 'checkpoint'
     candidates = []
-    for f in os.listdir(base_dir):
-        full_path = os.path.join(base_dir, f)
+    for f in os.listdir(local_folder):
+        full_path = os.path.join(local_folder, f)
         if os.path.isdir(full_path):
             print(f"Inspecting subfolder: {full_path}")
             print("  Contents:", os.listdir(full_path))
             if f.startswith("checkpoint"):
-                # Check for HF files
                 if os.path.exists(os.path.join(full_path, "pytorch_model.bin")) \
                    or os.path.exists(os.path.join(full_path, "adapter_config.json")):
                     print(f"  Valid checkpoint found in {full_path}")
                     candidates.append(full_path)
 
     if not candidates:
-        print("No valid checkpoint found, fallback to base folder")
-        return base_dir
+        print("No valid checkpoint found, fallback to local folder")
+        return local_folder
 
-    # 3️⃣ Sort by numeric step (checkpoint-123)
+    # Pick latest checkpoint
     def get_step(path):
         try:
             return int(os.path.basename(path).split("-")[-1])
@@ -309,7 +312,7 @@ if config["trainer_config"]["load_model"] is not None:
 if config['trainer_config']["resume_from_checkpoint"] is not None:
     task_id = config['trainer_config']["resume_from_checkpoint"]
     checkpoint_name = f"checkpoint-{task_id}"
-    print(f"Resuming from task ID: {task_id}")
+    print(f"\nResuming from task ID: {task_id}")
 
     model_id = manager.get_model_id_by_name(checkpoint_name)
     manager.get_model(
@@ -317,18 +320,12 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
         local_dest="."
     )
 
-    # Use the proper folder structure
+    # Local folder after download
+    local_folder = os.path.join(".", model_id, manager.get_model_info(checkpoint_name)["folder_name"])
+    checkpoint_path = find_checkpoint_inside_model(local_folder)
 
-    version = manager.get_latest_version(checkpoint_name)
-    model_data = manager.get_model_info(checkpoint_name)
-    folder_name = model_data.get("folder_name")
-
-    print(f"folder name is {folder_name}")
-
-    checkpoint_path = find_checkpoint_inside_model(model_id, version, folder_name)
     config['trainer_config']["resume_from_checkpoint"] = checkpoint_path
-
-    print(f"Resume checkpoint path set to: {checkpoint_path}")
+    print(f"\nResume checkpoint path set to: {checkpoint_path}")
 
 
 dataset_object = s3_download(
