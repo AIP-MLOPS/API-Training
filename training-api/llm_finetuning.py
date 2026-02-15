@@ -328,7 +328,9 @@ if config['trainer_config']["resume_from_checkpoint"] is not None:
 
     # Local folder after download
     # Full local folder path including version
-    local_folder = os.path.join(local_model_path, version, folder_name)
+    # local_folder = os.path.join(local_model_path, version, folder_name)
+    local_folder = os.path.join(".", model_id, version, folder_name)
+    print(f"local_folder is: {local_folder}")
     checkpoint_path = find_checkpoint_inside_model(local_folder)
 
     config['trainer_config']["resume_from_checkpoint"] = checkpoint_path
