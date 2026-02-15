@@ -14,6 +14,35 @@ from logger.logger import CL_Logger
 
 torch._dynamo.config.disable = True
 
+
+def find_latest_checkpoint(base_dir):
+    """
+    Recursively search base_dir for folders starting with 'checkpoint-' 
+    that contain 'pytorch_model.bin' or 'adapter_config.json'.
+    Returns the path to the latest checkpoint folder.
+    """
+    candidates = []
+    for root, dirs, files in os.walk(base_dir):
+        for d in dirs:
+            if d.startswith("checkpoint"):
+                full_path = os.path.join(root, d)
+                # Check for HF files
+                if os.path.exists(os.path.join(full_path, "pytorch_model.bin")) \
+                   or os.path.exists(os.path.join(full_path, "adapter_config.json")):
+                    candidates.append(full_path)
+    if not candidates:
+        return None
+    # Sort by checkpoint number
+    def get_step(path):
+        name = os.path.basename(path)
+        try:
+            return int(name.split("-")[-1])
+        except:
+            return -1
+    candidates.sort(key=get_step)
+    return candidates[-1]
+
+
 class LLM_Logger(CL_Logger):
     def on_train_end(self):
         self.log_scaler("Loss","Train",self.trainer.final_metrics["loss"])
@@ -260,40 +289,25 @@ if config["trainer_config"]["load_model"] is not None:
 
 
 if config['trainer_config']["resume_from_checkpoint"] is not None:
-
     task_id = config['trainer_config']["resume_from_checkpoint"]
     checkpoint_name = f"checkpoint-{task_id}"
     print(f"Resuming from task ID: {task_id}")
 
     model_id = manager.get_model_id_by_name(checkpoint_name)
-
     manager.get_model(
         model_name=checkpoint_name,
         local_dest="."
     )
 
-    # 🔎 Only look for checkpoint folders
-    checkpoint_dirs = [
-        f for f in os.listdir(model_id)
-        if os.path.isdir(os.path.join(model_id, f)) and f.startswith("checkpoint")
-    ]
+    latest_ckpt = find_latest_checkpoint(model_id)
 
-    if not checkpoint_dirs:
-        print(f"No checkpoint folders found in {model_id}")
+    if latest_ckpt is None:
+        print(f"No valid checkpoints found in {model_id}, resuming from top folder")
         config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/'
-        print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
     else:
-        # Sort by step number instead of alphabetically (safer)
-        checkpoint_dirs = sorted(
-            checkpoint_dirs,
-            key=lambda x: int(x.split("-")[-1])
-        )
+        config["trainer_config"]["resume_from_checkpoint"] = latest_ckpt
 
-        checkpoint_folder = checkpoint_dirs[-1]
-
-        config["trainer_config"]["resume_from_checkpoint"] = f'./{model_id}/{checkpoint_folder}/'
-        print(f"Checkpoint folder found: {checkpoint_folder}")
-        print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
+    print(f"Resume checkpoint path set to: {config['trainer_config']['resume_from_checkpoint']}")
 
 
 dataset_object = s3_download(
